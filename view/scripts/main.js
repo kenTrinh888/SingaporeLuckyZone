@@ -31,7 +31,7 @@ $.get("/getAllLayer", function(data) {
     
 
     var names = data;
-
+console.log(names);
     for (var i = 1; i < names.length; i++) {
         var name = names[i];
         console.log("start to get all layers");
