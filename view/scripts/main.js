@@ -28,20 +28,17 @@ var redMarker = L.AwesomeMarkers.icon({
 proj4.defs("EPSG:3414", "+proj=tmerc +lat_0=1.366666666666667 +lon_0=103.8333333333333 +k=1 +x_0=28001.642 +y_0=38744.572 +ellps=WGS84 +units=m +no_defs");
 console.log("app start");
 $.get("/getAllLayer", function(data) {
-    console.log("start to get all layers");
+    
 
     var names = data;
 
     for (var i = 1; i < names.length; i++) {
         var name = names[i];
+        console.log("start to get all layers");
+        var urlString = '/geojson/' + name;
+        console.log(urlString);
 
-
-        // console.log(name);
-        // nameDis = name.split('.')[1];
-        var url = 'view/geojson/' + name;
-         console.log(url);
-
-        $.getJSON(url, function(dataLoop) {
+        $.getJSON(urlString, function(dataLoop) {
             // // console.log(dataLoop);
             // L.Proj.geoJson(dataLoop,function(){
             //     console.log(dataLoop)
