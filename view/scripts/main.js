@@ -12,10 +12,10 @@ var map = L.map('map', {
 // $.getJSON('/geojson/PLAYSG.json', function(data) {
 //     omnivore.geojson(data).addTo(map);
 // })
-new L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+new L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     minZoom: 0,
     maxZoom: 50,
-    attribution: 'Map data © <a href="http://www.openstreetmap.org">OpenStreetMap contributors</a>'
+    attribution: 'Map data © <a href="https://www.openstreetmap.org">OpenStreetMap contributors</a>'
 }).addTo(map);
 // omnivore.geojson('/geojson/PLAYSG.json').addTo(map);
 
