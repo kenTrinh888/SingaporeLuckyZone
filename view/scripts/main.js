@@ -31,18 +31,12 @@ $.get("/getAllLayer", function(data) {
     
 
     var names = data;
-console.log(names);
+    console.log(names);
     for (var i = 0; i < names.length; i++) {
         var name = names[i];
         console.log("start to get all layers");
         var urlString = '/geojson/' + name;
-        console.log(urlString);
-
         $.getJSON(urlString, function(dataLoop) {
-            // // console.log(dataLoop);
-            // L.Proj.geoJson(dataLoop,function(){
-            //     console.log(dataLoop)
-            // });
             console.log(dataLoop);
             L.Proj.geoJson(dataLoop, {
 
