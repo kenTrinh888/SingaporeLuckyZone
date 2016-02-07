@@ -43,7 +43,7 @@
     <link rel="stylesheet" href="/lib/metro-ui/docs/css/metro-icons.css">
     <link rel="stylesheet" href="/lib/metro-ui/docs/css/metro-responsive.css">
     <link rel="stylesheet" href="/lib/metro-ui/docs/css/metro-schemes.css">
-    <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/1.5.2/css/ionicons.min.css">
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/1.5.2/css/ionicons.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
     <!-- <end -->
     <!-- bower:css -->
@@ -98,26 +98,11 @@
                     <a href="#">Upload Layer</a>
 
                 </h5>
-                <form action="/upload" method="post" enctype="multipart/form-data">
+               <form action="/upload" method="post" enctype="multipart/form-data">
                     <input type="file" name="avatar">
                     <input type="submit" id="uploadFiles" value="Upload">
                 </form>
-                <div class="slidebar">
-                 <h5>
-                    <a href="#">Upload HDB Postal Code</a>
-
-                </h5>
-                    <input type="file" id="files" name="files" multiple="multiple" />
-                    <!-- <label>CSV header name: </label> -->
-                    <input type="text" id="csvHeader" checked>
-                </div>
-                <div class="treeview" data-role="treeview">
-                    <ul>
-                        <li class="node" data-mode="checkbox" data-name="c0">
-                            <span class="leaf">Indeterminate</span>
-                            <span class="node-toggle"></span>
-                        </li>
-                    </ul>
+                
                 </div>
 
             </div>

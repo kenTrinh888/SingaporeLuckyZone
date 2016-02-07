@@ -11,7 +11,7 @@ var turf = require('turf');
 // var gdal = require("gdal");
 var _ = require('lodash');
 var mapshaper = require('mapshaper');
-var globalurl = __dirname + '/app';
+var globalurl = __dirname + "/app/";
 
 
 app.use(express.static(__dirname + '/app'));
@@ -37,7 +37,7 @@ app.use(busboy());
 
 //Store all HTML files in view folder.
 
-app.get('/', function(req,res) {
+app.get('/', function(req, res) {
     res.sendFile((path.join(__dirname + '/index.html')));
 
     //It will find and locate index.html from View or Scripts
@@ -55,14 +55,11 @@ var result = {
   "type": "FeatureCollection",
   "features": resultFeatures
 };
-var jsonfile = require('jsonfile')
  
 var file = globalurl + '/basemap/result.json';
 
  
-jsonfile.writeFile(file, result, function (err) {
-  console.error(err)
-})
+
 // app.get("/getResult", function (req,res){
 //     // var resultSend = JSON
 //     var file = ogr2ogr(file)
@@ -85,17 +82,17 @@ jsonfile.writeFile(file, result, function (err) {
 convert(result,"result","basemap");
 
 
-app.get('/geojson', function(req, res) {
-    fs.readFile(__dirname + "/app/geojson/" + "buildings.json", "utf8", function(err, data) {
-        data = JSON.parse(data);
-        res.send(data);
-        if (err) {
-            return console.error(err);
-        }
-        // console.log(data);
+// app.get('/geojson', function(req, res) {
+//     fs.readFile(__dirname + "/app/geojson/" + "buildings.json", "utf8", function(err, data) {
+//         data = JSON.parse(data);
+//         res.send(data);
+//         if (err) {
+//             return console.error(err);
+//         }
+//         // console.log(data);
 
-    });
-})
+//     });
+// })
 
 
 // get the name for file
@@ -138,6 +135,21 @@ app.post('/upload', upload.array('avatar'), function(req, res) {
 
 
 });
+// Remove all files in uploads
+function rmDir(dirPath) {
+      try { var files = fs.readdirSync(dirPath); }
+      catch(e) { return; }
+      if (files.length > 0)
+        for (var i = 0; i < files.length; i++) {
+          var filePath = dirPath + '/' + files[i];
+          if (fs.statSync(filePath).isFile())
+            fs.unlinkSync(filePath);
+          else
+            rmDir(filePath);
+        }
+      // fs.rmdirSync(dirPath);
+    };
+rmDir(globalurl + "/uploads/")
 // var dir =  __dirname + '/app' + '/geojson' ;
 // var source = JSON.parse(require(dir + '/SingaporePools1.geojson'));
 // fs.readFile(__dirname + "/app/geojson/" + "DGPSubZone.json", "utf8", function(err, data) {
@@ -270,6 +282,5 @@ process.on('uncaughtException', function (err) {
 //     res.send(result);
 // });
 
-app.listen(process.env.PORT || 3000, function(){
-  console.log("Express server listening on port %d in %s mode", this.address().port, app.settings.env);
-});
+app.listen(3000);
+console.log("Running at Port 3000");
