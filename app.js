@@ -14,7 +14,7 @@ var mapshaper = require('mapshaper');
 var globalurl = __dirname + "/app/";
 
 
-app.use(express.static(__dirname + '/app'));
+app.use(express.static(__dirname ));
 var storage = multer.diskStorage({
     destination: function(req, file, cb) {
         cb(null, __dirname + '/app' + '/uploads')
