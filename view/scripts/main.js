@@ -47,7 +47,7 @@ $.get("/getAllLayer", function(data) {
 
     for (var i = 1; i < names.length; i++) {
         var name = names[i];
-                    console.log(name);
+                    
 
         // console.log(name);
         // nameDis = name.split('.')[1];
@@ -58,6 +58,7 @@ $.get("/getAllLayer", function(data) {
             // L.Proj.geoJson(dataLoop,function(){
             //     console.log(dataLoop)
             // });
+        console.log(dataLoop);
             L.Proj.geoJson(dataLoop, {
 
                 pointToLayer: function(feature, latlng) {
