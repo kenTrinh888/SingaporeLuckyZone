@@ -14,7 +14,7 @@ var mapshaper = require('mapshaper');
 var globalurl = __dirname + "/app/";
 
 
-app.use(express.static(__dirname ));
+app.use(express.static(__dirname + "/app"));
 var storage = multer.diskStorage({
     destination: function(req, file, cb) {
         cb(null, __dirname + '/app' + '/uploads')
@@ -169,7 +169,7 @@ function convert(file, name,directory) {
         .skipfailures()
         .project("EPSG:3414")
         .stream()
-    FILE.pipe(fs.createWriteStream(globalurl + '/'+ directory+ '/' + name + '.geojson'))
+    FILE.pipe(fs.createWriteStream(__dirname + '/'+ directory+ '/' + name + '.geojson'))
 
 }
 
