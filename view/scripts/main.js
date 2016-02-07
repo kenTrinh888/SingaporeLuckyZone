@@ -38,7 +38,8 @@ $.get("/getAllLayer", function(data) {
 
         // console.log(name);
         // nameDis = name.split('.')[1];
-        var url = '/geojson/' + name;
+        var url = 'view/geojson/' + name;
+         console.log(url);
 
         $.getJSON(url, function(dataLoop) {
             // // console.log(dataLoop);
