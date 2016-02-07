@@ -29,6 +29,8 @@ var storage = multer.diskStorage({
 });
 
 
+
+
 var upload = multer({
     storage: storage
 });
@@ -41,6 +43,10 @@ app.get('/', function(req, res) {
     res.sendFile((path.join(__dirname + '/index.html')));
 
     //It will find and locate index.html from View or Scripts
+});
+
+app.get('/favicon.ico', function(req,res){
+    res.send(globalurl+"/favicon.ico");
 });
 
 var SPdir = globalurl + "/basemap/SingaporePools.geojson" ;
