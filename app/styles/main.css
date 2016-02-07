@@ -1,0 +1,54 @@
+body {
+    padding-top: 70px; /* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
+}
+
+.portfolio-item {
+    margin-bottom: 25px;
+}
+
+footer {
+    margin: 50px 0;
+}
+
+*,
+*:before,
+*:after {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+.group:after {
+	content: "";
+	display: table;
+	clear: both;
+}
+
+body,
+html {
+	font-family: Arial, sans-serif;
+	height: 100%;
+}
+.map {
+	width: 1000px;
+	height: 700px;
+}
+
+.map-application {
+	height: 100%;
+	width: 100%;
+}
+
+
+header {
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 50px;
+	padding: 15px;
+	z-index: 9;
+	border-bottom: 1px solid #eee;
+	width:100%;
+}
+header .appName {
+	float: left;
+}
