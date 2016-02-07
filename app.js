@@ -183,7 +183,7 @@ app.get("/removeGeojsonLayer",function (req,res){
 
 // convert shapefile to geojson
 function convert(file, name,directory) {
-    var nameofFile = name + ".geojson;"
+    var nameofFile = name + ".geojson"
     var urlDestination = path.join(__dirname,"view",directory,nameofFile)
     var FILE = ogr2ogr(file)
         .format('GeoJSON')
