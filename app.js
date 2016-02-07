@@ -121,6 +121,7 @@ app.post('/upload', upload.array('avatar'), function(req, res) {
     // var directory = path.join(__dirname, 'view/geojson');
 
     console.log(directory);
+    console.log(filePath);
     // if (nameString === "shp" || nameString === "zip"){
     // var from = "app/uploads" + "/"+name;
     // console.log(from);
@@ -182,12 +183,14 @@ app.get("/removeGeojsonLayer",function (req,res){
 
 // convert shapefile to geojson
 function convert(file, name,directory) {
+    var nameofFile = name + ".geojson;"
+    var urlDestination = path.join(__dirname,"view",directory,nameofFile)
     var FILE = ogr2ogr(file)
         .format('GeoJSON')
         .skipfailures()
         .project("EPSG:3414")
         .stream()
-    FILE.pipe(fs.createWriteStream(__dirname + "/view"+ '/'+ directory+ '/' + name + '.geojson'))
+    FILE.pipe(fs.createWriteStream(urlDestination);
 
 }
 
