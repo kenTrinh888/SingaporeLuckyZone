@@ -187,7 +187,7 @@ function convert(file, name,directory) {
 
 //read all files in a folder //
 app.get('/getAllLayer', function(req, res) {
-    var path = __dirname + '/app' + '/geojson';
+    var path = __dirname + '/geojson';
     var name = fs.readdirSync(path);
     res.send(name);
 });
