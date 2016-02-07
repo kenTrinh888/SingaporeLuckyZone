@@ -11,13 +11,13 @@ var turf = require('turf');
 // var gdal = require("gdal");
 var _ = require('lodash');
 var mapshaper = require('mapshaper');
-var globalurl = __dirname + "/app";
+var globalurl = __dirname + "/view";
 
 
-app.use(express.static(__dirname + "/app"));
+app.use(express.static(__dirname + "/view"));
 var storage = multer.diskStorage({
     destination: function(req, file, cb) {
-        cb(null, __dirname + '/app' + '/uploads')
+        cb(null, __dirname + '/view' + '/uploads')
     },
      onError : function(err, next) {
       console.log('error', err);
@@ -83,7 +83,7 @@ convert(result,"result","basemap");
 
 
 // app.get('/geojson', function(req, res) {
-//     fs.readFile(__dirname + "/app/geojson/" + "buildings.json", "utf8", function(err, data) {
+//     fs.readFile(__dirname + "/view/geojson/" + "buildings.json", "utf8", function(err, data) {
 //         data = JSON.parse(data);
 //         res.send(data);
 //         if (err) {
@@ -151,9 +151,9 @@ function rmDir(dirPath) {
       // fs.rmdirSync(dirPath);
     };
 rmDir(globalurl + "/uploads/")
-// var dir =  __dirname + '/app' + '/geojson' ;
+// var dir =  __dirname + '/view' + '/geojson' ;
 // var source = JSON.parse(require(dir + '/SingaporePools1.geojson'));
-// fs.readFile(__dirname + "/app/geojson/" + "DGPSubZone.json", "utf8", function(err, data) {
+// fs.readFile(__dirname + "/view/geojson/" + "DGPSubZone.json", "utf8", function(err, data) {
 // var reproject = require("reproject");
 // fs.readFile(dir + '/SingaporePools1.geojson', "utf8", function(err, data) {
 //     var source = JSON.parse(data);
@@ -170,11 +170,11 @@ function convert(file, name,directory) {
         .skipfailures()
         .project("EPSG:3414")
         .stream()
-    FILE.pipe(fs.createWriteStream(__dirname + "/app"+ '/'+ directory+ '/' + name + '.geojson'))
+    FILE.pipe(fs.createWriteStream(__dirname + "/view"+ '/'+ directory+ '/' + name + '.geojson'))
 
 }
 
-// var dir = __dirname + '/app' + '/geojson/' +"SingaporePools1.geojson";
+// var dir = __dirname + '/view' + '/geojson/' +"SingaporePools1.geojson";
 // // console.log(dir);
 // var dataset = gdal.open(dir);
 // var layer = dataset.layers.get(0);
@@ -239,7 +239,7 @@ process.on('uncaughtException', function (err) {
 
 // API get all Layer Columns Name
 // app.get('/getAllLayerColumnName/', function(req, res) {
-//     var path = __dirname + '/app' + '/geojson/';
+//     var path = __dirname + '/view' + '/geojson/';
 //     var name = fs.readdirSync(path);
 //     var objectsSend = [];
 //     for (var i = 0; i < name.length; i++) {
@@ -260,7 +260,7 @@ process.on('uncaughtException', function (err) {
 // });
 // // API get all Layer Columns Values
 // app.get('/getAllLayerColumnValues/:nameOfFile/:columnName', function(req, res) {
-//     var path = __dirname + '/app' + '/geojson/';
+//     var path = __dirname + '/view' + '/geojson/';
 //     var nameOfFile = req.params.nameOfFile;
 //     nameOfFile = nameOfFile + ".geojson";
 //     var columnName = req.params.columnName;
