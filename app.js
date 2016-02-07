@@ -163,6 +163,11 @@ app.get("/removeUploadsFiles",function (req,res){
     rmDir(URLremove);
     res.send("Remove successful");
 })
+app.get("/removeGeojsonLayer",function (req,res){
+    var URLremove = path.join(__dirname, 'view/geojson/');
+    rmDir(URLremove);
+    res.send("Remove successful");
+})
 // var dir =  __dirname + '/view' + '/geojson' ;
 // var source = JSON.parse(require(dir + '/SingaporePools1.geojson'));
 // fs.readFile(__dirname + "/view/geojson/" + "DGPSubZone.json", "utf8", function(err, data) {
