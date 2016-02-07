@@ -18,6 +18,7 @@
     "multer": "^1.1.0",
     "multer-autoreap": "0.0.9",
     "ogr2ogr": "^0.5.1",
+    "path": "^0.12.7",
     "reproject": "^1.0.1",
     "request": "^2.67.0",
     "superagent": "^1.7.2",

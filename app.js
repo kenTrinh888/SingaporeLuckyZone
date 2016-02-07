@@ -12,12 +12,15 @@ var turf = require('turf');
 var _ = require('lodash');
 var mapshaper = require('mapshaper');
 var globalurl = __dirname + "/view";
+var path = require('path');
 
 
 app.use(express.static(__dirname + "/view"));
 var storage = multer.diskStorage({
     destination: function(req, file, cb) {
-        cb(null, __dirname + '/view' + '/uploads')
+        var directory = path.join(__dirname, '/view/uploads');
+
+        cb(null, directory)
     },
      onError : function(err, next) {
       console.log('error', err);
@@ -113,6 +116,8 @@ app.post('/upload', upload.array('avatar'), function(req, res) {
     var nameFirstPark = getFirstPart(name);
     var file = __dirname + "/" + name;
     var filePath = req.files[0].path;
+    // var directory = path.join(__dirname, 'view/geojson');
+
     console.log(filePath);
     // if (nameString === "shp" || nameString === "zip"){
     // var from = "app/uploads" + "/"+name;
@@ -187,8 +192,10 @@ function convert(file, name,directory) {
 
 //read all files in a folder //
 app.get('/getAllLayer', function(req, res) {
-    var path = __dirname + '/geojson';
-    var name = fs.readdirSync(path);
+    // path.join(__dirname, 'view/geojson')
+
+    var directory = path.join(__dirname, 'view/geojson');
+    var name = fs.readdirSync(directory);
     res.send(name);
 });
 
