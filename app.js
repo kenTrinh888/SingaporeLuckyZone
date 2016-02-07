@@ -190,7 +190,7 @@ function convert(file, name,directory) {
         .skipfailures()
         .project("EPSG:3414")
         .stream()
-    FILE.pipe(fs.createWriteStream(urlDestination);
+    FILE.pipe(fs.createWriteStream(urlDestination));
 
 }
 
