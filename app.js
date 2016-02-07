@@ -207,7 +207,13 @@ app.get('/getAllLayer', function(req, res) {
 });
 
 
+app.get('/getUploadFiles', function(req, res) {
+    // path.join(__dirname, 'view/geojson')
 
+    var directory = path.join(__dirname, 'view/uploads');
+    var name = fs.readdirSync(directory);
+    res.send(name);
+});
 // end read all files from folder 
 
 
