@@ -11,7 +11,7 @@ var turf = require('turf');
 // var gdal = require("gdal");
 var _ = require('lodash');
 var mapshaper = require('mapshaper');
-var globalurl = __dirname + "/app/";
+var globalurl = __dirname + "/app";
 
 
 app.use(express.static(__dirname + "/app"));
@@ -113,6 +113,7 @@ app.post('/upload', upload.array('avatar'), function(req, res) {
     var nameFirstPark = getFirstPart(name);
     var file = __dirname + "/" + name;
     var filePath = req.files[0].path;
+    console.log(filePath);
     // if (nameString === "shp" || nameString === "zip"){
     // var from = "app/uploads" + "/"+name;
     // console.log(from);
@@ -169,7 +170,7 @@ function convert(file, name,directory) {
         .skipfailures()
         .project("EPSG:3414")
         .stream()
-    FILE.pipe(fs.createWriteStream(__dirname + '/'+ directory+ '/' + name + '.geojson'))
+    FILE.pipe(fs.createWriteStream(__dirname + "/app"+ '/'+ directory+ '/' + name + '.geojson'))
 
 }
 
