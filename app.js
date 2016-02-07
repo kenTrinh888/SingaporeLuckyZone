@@ -8,7 +8,7 @@ var bodyParser = require('body-parser');
 var multer = require('multer');
 var busboy = require('connect-busboy');
 var turf = require('turf');
-var gdal = require("gdal");
+// var gdal = require("gdal");
 var _ = require('lodash');
 var mapshaper = require('mapshaper');
 var globalurl = __dirname + '/app';
@@ -29,8 +29,6 @@ var storage = multer.diskStorage({
 });
 
 
-
-
 var upload = multer({
     storage: storage
 });
@@ -39,14 +37,10 @@ app.use(busboy());
 
 //Store all HTML files in view folder.
 
-app.get('/', function(req, res) {
+app.get('/', function(req,res) {
     res.sendFile((path.join(__dirname + '/index.html')));
 
     //It will find and locate index.html from View or Scripts
-});
-
-app.get('/favicon.ico', function(req,res){
-    res.send(globalurl+"/favicon.ico");
 });
 
 var SPdir = globalurl + "/basemap/SingaporePools.geojson" ;
@@ -203,7 +197,7 @@ app.get('/getPostalCode/:id', function(req, res) {
 })
 
 function geoCoding (postcode){
-    var urlString = "http://www.onemap.sg/APIV2/services.svc/basicSearchV2?token=qo/s2TnSUmfLz+32CvLC4RMVkzEFYjxqyti1KhByvEacEdMWBpCuSSQ+IFRT84QjGPBCuz/cBom8PfSm3GjEsGc8PkdEEOEr&searchVal=" + postcode + "&otptFlds=SEARCHVAL,CATEGORY&returnGeom=1&rset=1&projSys=WGS84";
+    var urlStringName = "http://www.onemap.sg/APIV2/services.svc/basicSearchV2?token=qo/s2TnSUmfLz+32CvLC4RMVkzEFYjxqyti1KhByvEacEdMWBpCuSSQ+IFRT84QjGPBCuz/cBom8PfSm3GjEsGc8PkdEEOEr&searchVal=" + postcode + "&otptFlds=SEARCHVAL,CATEGORY&returnGeom=1&rset=1&projSys=WGS84";
 
     request(urlString, function(error, response, body) {
         if (!error && response.statusCode == 200) {
@@ -231,50 +225,50 @@ process.on('uncaughtException', function (err) {
 
 
 // API get all Layer Columns Name
-app.get('/getAllLayerColumnName/', function(req, res) {
-    var path = __dirname + '/app' + '/geojson/';
-    var name = fs.readdirSync(path);
-    var objectsSend = [];
-    for (var i = 0; i < name.length; i++) {
+// app.get('/getAllLayerColumnName/', function(req, res) {
+//     var path = __dirname + '/app' + '/geojson/';
+//     var name = fs.readdirSync(path);
+//     var objectsSend = [];
+//     for (var i = 0; i < name.length; i++) {
 
-        var aName = name[i];
-        var object = {
-            "name": aName,
-            "coloumns": []
-        };
-        var dir = path + aName;
-        var dataset = gdal.open(dir);
-        var layer = dataset.layers.get(0);
-        var columnsname = layer.fields.getNames();
-        object.coloumns = columnsname;
-        objectsSend.push(object);
-    }
-    res.send(objectsSend);
-});
-// API get all Layer Columns Values
-app.get('/getAllLayerColumnValues/:nameOfFile/:columnName', function(req, res) {
-    var path = __dirname + '/app' + '/geojson/';
-    var nameOfFile = req.params.nameOfFile;
-    nameOfFile = nameOfFile + ".geojson";
-    var columnName = req.params.columnName;
-    // var nameOfLayer = fs.readdirSync(path);
-    var propertiesArray = [];
-    var featureCollectionFile = path + nameOfFile;
-    var featurecollection = JSON.parse(fs.readFileSync(featureCollectionFile));
-    var featuresProp = featurecollection.features;
-    for (var i = 0; i < featuresProp.length; i++) {
+//         var aName = name[i];
+//         var object = {
+//             "name": aName,
+//             "coloumns": []
+//         };
+//         var dir = path + aName;
+//         var dataset = gdal.open(dir);
+//         var layer = dataset.layers.get(0);
+//         var columnsname = layer.fields.getNames();
+//         object.coloumns = columnsname;
+//         objectsSend.push(object);
+//     }
+//     res.send(objectsSend);
+// });
+// // API get all Layer Columns Values
+// app.get('/getAllLayerColumnValues/:nameOfFile/:columnName', function(req, res) {
+//     var path = __dirname + '/app' + '/geojson/';
+//     var nameOfFile = req.params.nameOfFile;
+//     nameOfFile = nameOfFile + ".geojson";
+//     var columnName = req.params.columnName;
+//     // var nameOfLayer = fs.readdirSync(path);
+//     var propertiesArray = [];
+//     var featureCollectionFile = path + nameOfFile;
+//     var featurecollection = JSON.parse(fs.readFileSync(featureCollectionFile));
+//     var featuresProp = featurecollection.features;
+//     for (var i = 0; i < featuresProp.length; i++) {
 
-        var nameObject = featuresProp[i].properties;
-        for (var key in nameObject) {
-            if (key === columnName) {
-                propertiesArray.push(nameObject[key]);
-            }
-        }
+//         var nameObject = featuresProp[i].properties;
+//         for (var key in nameObject) {
+//             if (key === columnName) {
+//                 propertiesArray.push(nameObject[key]);
+//             }
+//         }
 
-    }
-    var result = _.uniq(propertiesArray);
-    res.send(result);
-});
+//     }
+//     var result = _.uniq(propertiesArray);
+//     res.send(result);
+// });
 
 app.listen(process.env.PORT || 3000, function(){
   console.log("Express server listening on port %d in %s mode", this.address().port, app.settings.env);

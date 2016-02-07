@@ -93,7 +93,6 @@ $.get("/getAllLayer", function(data) {
 
 // })
 $.getJSON("/basemap/result.geojson", function (data){
-    console.log(data);
      L.Proj.geoJson(data).addTo(map);
 
 })
