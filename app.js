@@ -115,10 +115,12 @@ app.post('/upload', upload.array('avatar'), function(req, res) {
     var nameString = getSecondPart(name);
     var nameFirstPark = getFirstPart(name);
     var file = __dirname + "/" + name;
+    var directory = path.join(__dirname, 'view/uploads/',name);
+
     var filePath = req.files[0].path;
     // var directory = path.join(__dirname, 'view/geojson');
 
-    console.log(filePath);
+    console.log(directory);
     // if (nameString === "shp" || nameString === "zip"){
     // var from = "app/uploads" + "/"+name;
     // console.log(from);
@@ -131,7 +133,7 @@ app.post('/upload', upload.array('avatar'), function(req, res) {
     //     // console.log(file);
 
 
-        convert(filePath, nameFirstPark,"geojson");
+        convert(directory, nameFirstPark,"geojson");
     // }
  
 
@@ -155,7 +157,12 @@ function rmDir(dirPath) {
         }
       // fs.rmdirSync(dirPath);
     };
-rmDir(globalurl + "/uploads/")
+
+app.get("/removeUploadsFiles",function (req,res){
+    var URLremove = path.join(__dirname, 'view/uploads/');
+    rmDir(URLremove);
+    res.send("Remove successful");
+})
 // var dir =  __dirname + '/view' + '/geojson' ;
 // var source = JSON.parse(require(dir + '/SingaporePools1.geojson'));
 // fs.readFile(__dirname + "/view/geojson/" + "DGPSubZone.json", "utf8", function(err, data) {
