@@ -18,7 +18,7 @@ var path = require('path');
 app.use(express.static(__dirname + "/view"));
 var storage = multer.diskStorage({
     destination: function(req, file, cb) {
-        var directory = path.join(__dirname,'view/uploads/');
+        var directory = path.join(__dirname,'uploads/');
 
         cb(null, directory)
     },
@@ -117,7 +117,7 @@ app.post('/upload', upload.array('avatar'), function(req, res) {
     var nameString = getSecondPart(name);
     var nameFirstPark = getFirstPart(name);
     var file = __dirname + "/" + name;
-    var directory = path.join(__dirname,'view/uploads/',name);
+    var directory = path.join(__dirname,'uploads/',name);
     console.log("dir" + __dirname);
     // var fileChosen = require(directory);
     var filePath = req.files[0].path;
@@ -195,6 +195,7 @@ function convert(file, name) {
         .skipfailures()
         .project("EPSG:3414")
         .stream()
+    // fs.writeFile(urlDestination,FILE);
     FILE.pipe(fs.createWriteStream(urlDestination));
 
 }
