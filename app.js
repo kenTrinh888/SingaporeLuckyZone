@@ -117,13 +117,14 @@ app.post('/upload', upload.array('avatar'), function(req, res) {
     var nameString = getSecondPart(name);
     var nameFirstPark = getFirstPart(name);
     var file = __dirname + "/" + name;
-    var directory = path.join( '../view/uploads/',name);
+    var directory = path.join(__dirname,'../view/uploads/',name);
+    console.log("dir" + __dirname);
 
     var filePath = req.files[0].path;
     // var directory = path.join(__dirname, 'view/geojson');
 
-    console.log(directory);
-    console.log(filePath);
+    // console.log(directory);
+    // console.log(filePath);
     // if (nameString === "shp" || nameString === "zip"){
     // var from = "app/uploads" + "/"+name;
     // console.log(from);
