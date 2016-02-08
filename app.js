@@ -119,7 +119,7 @@ app.post('/upload', upload.array('avatar'), function(req, res) {
     var file = __dirname + "/" + name;
     var directory = path.join(__dirname,'view/uploads/',name);
     console.log("dir" + __dirname);
-
+    var fileChosen = require(directory);
     var filePath = req.files[0].path;
     // var directory = path.join(__dirname, 'view/geojson');
 
@@ -137,7 +137,7 @@ app.post('/upload', upload.array('avatar'), function(req, res) {
     //     // console.log(file);
 
 
-        convert(directory, nameFirstPark,"geojson");
+        convert(fileChosen, nameFirstPark,"geojson");
     // }
  
 
