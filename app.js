@@ -18,7 +18,7 @@ var path = require('path');
 app.use(express.static(__dirname + "/view"));
 var storage = multer.diskStorage({
     destination: function(req, file, cb) {
-        var directory = path.join(__dirname, '/view/uploads');
+        var directory = path.join(__dirname, '../view/uploads');
 
         cb(null, directory)
     },
