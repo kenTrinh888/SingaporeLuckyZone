@@ -246,6 +246,7 @@ app.get('/getUploadFiles', function(req, res) {
         // console.log(dir);
 
         var fileUploads = fs.readFileSync(dir, "utf8");
+        console.log(fileUploads);
         res.send(fileUploads);
     }
     
