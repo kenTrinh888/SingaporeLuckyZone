@@ -236,7 +236,16 @@ app.get('/getUploadFiles', function(req, res) {
     
 });
 // end read all files from folder 
+app.get('/getUploadFilesName', function(req, res) {
+    // path.join(__dirname, 'view/geojson')
+// var SingaporePools = JSON.parse(fs.readFileSync(SPdir, "utf8"));
+    var directory = path.join(__dirname, 'view/uploads');
+    var names = fs.readdirSync(directory);
+            res.send(names);
 
+    
+    
+});
 
 app.get('/getPostalCode/:id', function(req, res) {
     var postcode = req.params.id;
