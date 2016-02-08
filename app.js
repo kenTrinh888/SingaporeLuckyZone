@@ -227,7 +227,7 @@ app.get('/getJSONContent', function(req, res) {
     var names = fs.readdirSync(directory);
      for (var i = 1; i < names.length ; i++){
         var name = names[i];
-        var dir = path.join(__dirname,"/view/geojson",name);
+        var dir = path.join(__dirname,"view","geojson",name);
         // console.log(dir);
 
         var fileJSON = JSON.parse(fs.readFileSync(dir, "utf8"));
@@ -242,7 +242,7 @@ app.get('/getUploadFiles', function(req, res) {
     var names = fs.readdirSync(directory);
      for (var i = 1; i < names.length ; i++){
         var name = names[i];
-        var dir = path.join(__dirname,"/view/uploads",name);
+        var dir = path.join(__dirname,"view/uploads",name);
         // console.log(dir);
 
         var fileUploads = fs.readFileSync(dir, "utf8");
