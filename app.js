@@ -16,26 +16,10 @@ var path = require('path');
 
 
 app.use(express.static(__dirname + "/view"));
-var storage = multer.diskStorage({
-    destination: function(req, file, cb) {
-        var directory = path.join(__dirname, '/view/uploads');
 
-        cb(null, directory)
-    },
-     onError : function(err, next) {
-      console.log('error', err);
-      next(err);
-    },
-    filename: function(req, file, cb) {
-        cb(null, file.originalname);
-    }
-});
-
-
-var upload = multer({
-    storage: storage
-});
 app.use(busboy());
+
+var upload = multer({ dest: globalurl + '/uploads/' })
 
 
 //Store all HTML files in view folder.
@@ -109,20 +93,26 @@ function getFirstPart(str) {
 }
 
 
-app.post('/upload', upload.array('avatar'), function(req, res) {
+app.post('/upload',upload.single('avatar') ,function(req, res) {
+    var originalname = req.file.originalname;
+    var nameChange = getFirstPart(originalname);
+    console.log(req.file);
+    convert(req.file.path,nameChange,"geojson")
+
     // var newPath = __dirname + "/uploads/uploadedFileName";
-    var name = req.files[0].originalname;
-    console.log(name);
-    var nameString = getSecondPart(name);
-    var nameFirstPark = getFirstPart(name);
-    var file = __dirname + "/" + name;
-    var directory = path.join(__dirname, 'view/uploads/',name);
+    // var actalfile = req.files[0];
+    // var name = req.files[0].originalname;
+    // console.log(name);
+    // var nameString = getSecondPart(name);
+    // var nameFirstPark = getFirstPart(name);
+    // var file = __dirname + "/" + name;
+    // var directory = path.join(__dirname, 'view/uploads/',name);
 
-    var filePath = req.files[0].path;
-    // var directory = path.join(__dirname, 'view/geojson');
+    // var filePath = req.files[0].path;
+    // // var directory = path.join(__dirname, 'view/geojson');
 
-    console.log(directory);
-    console.log(filePath);
+    // console.log(directory);
+    // console.log(filePath);
     // if (nameString === "shp" || nameString === "zip"){
     // var from = "app/uploads" + "/"+name;
     // console.log(from);
@@ -135,8 +125,8 @@ app.post('/upload', upload.array('avatar'), function(req, res) {
     //     // console.log(file);
 
 
-        convert(directory, nameFirstPark,"geojson");
-    // }
+//         convert(actalfile, nameFirstPark,"geojson");
+//     // }
  
 
 
