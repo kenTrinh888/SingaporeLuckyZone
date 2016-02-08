@@ -244,7 +244,7 @@ app.get('/getUploadFiles', function(req, res) {
     var names = fs.readdirSync(directory);
      for (var i = 1; i < names.length ; i++){
         var name = names[i];
-        var dir = path.join(__dirname,"view/uploads",name);
+        var dir = path.join(__dirname,name);
         // console.log(dir);
 
         var fileUploads = fs.readFileSync(dir, "utf8");
@@ -265,7 +265,15 @@ app.get('/getUploadFilesName', function(req, res) {
     
     
 });
+// app.get('/getIndex', function(req, res) {
+//     // path.join(__dirname, 'view/geojson')
+// // var SingaporePools = JSON.parse(fs.readFileSync(SPdir, "utf8"));
+//     var file = path.join(__dirname, 'index.hmtl');
+//             res.send(names);
 
+    
+    
+// });
 app.get('/getPostalCode/:id', function(req, res) {
     var postcode = req.params.id;
     // console.log("id " + postcode);
