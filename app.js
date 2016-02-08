@@ -82,7 +82,7 @@ var file = globalurl + '/basemap/result.json';
 
 //     console.log("The file was saved!");
 // });
-convert(result,"result","basemap");
+// convert(result,"result","basemap");
 
 
 // app.get('/geojson', function(req, res) {
@@ -97,6 +97,7 @@ convert(result,"result","basemap");
 //     });
 // })
 
+// var UploadsData =JSON.parse(fs.readFile(__dirname + "/view/uploads/" + "AQUATICS.kml", "utf8"));;
 
 // get the name for file
 function getSecondPart(str) {
@@ -183,6 +184,8 @@ app.get("/removeGeojsonLayer",function (req,res){
 
 // convert shapefile to geojson
 function convert(file, name,directory) {
+
+    console.log(file);
     var nameofFile = name + ".geojson"
     var urlDestination = path.join(__dirname,"view",directory,nameofFile)
     var FILE = ogr2ogr(file)
