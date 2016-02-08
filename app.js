@@ -220,6 +220,21 @@ app.get('/getAllLayer', function(req, res) {
 });
 
 
+app.get('/getJSONContent', function(req, res) {
+    // path.join(__dirname, 'view/geojson')
+// var SingaporePools = JSON.parse(fs.readFileSync(SPdir, "utf8"));
+    var directory = path.join(__dirname, 'view/geojson');
+    var names = fs.readdirSync(directory);
+     for (var i = 1; i < names.length ; i++){
+        var name = names[i];
+        var dir = path.join(__dirname,"/view/geojson",name);
+        // console.log(dir);
+
+        var fileJSON = JSON.parse(fs.readFileSync(dir, "utf8"));
+        res.send(fileJSON);
+    }
+    
+});
 app.get('/getUploadFiles', function(req, res) {
     // path.join(__dirname, 'view/geojson')
 // var SingaporePools = JSON.parse(fs.readFileSync(SPdir, "utf8"));
@@ -230,11 +245,12 @@ app.get('/getUploadFiles', function(req, res) {
         var dir = path.join(__dirname,"/view/uploads",name);
         // console.log(dir);
 
-        var size = fs.readFileSync(dir, "utf8");
-        res.send(size);
+        var fileUploads = fs.readFileSync(dir, "utf8");
+        res.send(fileUploads);
     }
     
 });
+
 // end read all files from folder 
 app.get('/getUploadFilesName', function(req, res) {
     // path.join(__dirname, 'view/geojson')
