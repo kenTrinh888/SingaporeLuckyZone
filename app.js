@@ -19,7 +19,7 @@ app.use(express.static(__dirname + "/view"));
 
 app.use(busboy());
 
-var upload = multer({ dest: globalurl + '/uploads/' })
+var upload = multer({ dest: path.join(__dirname + 'view/uploads/') })
 
 
 //Store all HTML files in view folder.
