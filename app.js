@@ -257,7 +257,7 @@ app.get('/getUploadFiles', function(req, res) {
 app.get('/getUploadFilesName', function(req, res) {
     // path.join(__dirname, 'view/geojson')
 // var SingaporePools = JSON.parse(fs.readFileSync(SPdir, "utf8"));
-    var directory = path.join(__dirname, '../view/uploads');
+    var directory = path.join(__dirname, 'view/uploads');
     var names = fs.readdirSync(directory);
             res.send(names);
 
