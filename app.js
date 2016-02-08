@@ -18,7 +18,7 @@ var path = require('path');
 app.use(express.static(__dirname + "/view"));
 var storage = multer.diskStorage({
     destination: function(req, file, cb) {
-        var directory = path.join(__dirname, '/view/uploads');
+        var directory = path.join(__dirname, '../view/uploads');
 
         cb(null, directory)
     },
@@ -256,7 +256,7 @@ app.get('/getUploadFiles', function(req, res) {
 app.get('/getUploadFilesName', function(req, res) {
     // path.join(__dirname, 'view/geojson')
 // var SingaporePools = JSON.parse(fs.readFileSync(SPdir, "utf8"));
-    var directory = path.join(__dirname, 'view/uploads');
+    var directory = path.join(__dirname, '.. /view/uploads');
     var names = fs.readdirSync(directory);
             res.send(names);
 
