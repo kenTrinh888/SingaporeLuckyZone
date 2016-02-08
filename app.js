@@ -16,10 +16,26 @@ var path = require('path');
 
 
 app.use(express.static(__dirname + "/view"));
+var storage = multer.diskStorage({
+    destination: function(req, file, cb) {
+        var directory = path.join(__dirname, '/view/uploads');
 
+        cb(null, directory)
+    },
+     onError : function(err, next) {
+      console.log('error', err);
+      next(err);
+    },
+    filename: function(req, file, cb) {
+        cb(null, file.originalname);
+    }
+});
+
+
+var upload = multer({
+    storage: storage
+});
 app.use(busboy());
-
-var upload = multer({ dest: path.join(__dirname + '/view/uploads/') })
 
 
 //Store all HTML files in view folder.
@@ -93,26 +109,21 @@ function getFirstPart(str) {
 }
 
 
-app.post('/upload',upload.single('avatar') ,function(req, res) {
-    var originalname = req.file.originalname;
-    var nameChange = getFirstPart(originalname);
-    console.log(req.file);
-    convert(req.file.path,nameChange,"geojson")
-
+app.post('/upload', upload.array('avatar'), function(req, res) {
     // var newPath = __dirname + "/uploads/uploadedFileName";
-    // var actalfile = req.files[0];
-    // var name = req.files[0].originalname;
-    // console.log(name);
-    // var nameString = getSecondPart(name);
-    // var nameFirstPark = getFirstPart(name);
-    // var file = __dirname + "/" + name;
-    // var directory = path.join(__dirname, 'view/uploads/',name);
 
-    // var filePath = req.files[0].path;
-    // // var directory = path.join(__dirname, 'view/geojson');
+    var name = req.files[0].originalname;
+    console.log(name);
+    var nameString = getSecondPart(name);
+    var nameFirstPark = getFirstPart(name);
+    var file = __dirname + "/" + name;
+    var directory = path.join(__dirname, 'view/uploads/',name);
 
-    // console.log(directory);
-    // console.log(filePath);
+    var filePath = req.files[0].path;
+    // var directory = path.join(__dirname, 'view/geojson');
+
+    console.log(directory);
+    console.log(filePath);
     // if (nameString === "shp" || nameString === "zip"){
     // var from = "app/uploads" + "/"+name;
     // console.log(from);
@@ -125,8 +136,8 @@ app.post('/upload',upload.single('avatar') ,function(req, res) {
     //     // console.log(file);
 
 
-//         convert(actalfile, nameFirstPark,"geojson");
-//     // }
+        convert(directory, nameFirstPark,"geojson");
+    // }
  
 
 
@@ -204,16 +215,25 @@ app.get('/getAllLayer', function(req, res) {
 
     var directory = path.join(__dirname, 'view/geojson');
     var name = fs.readdirSync(directory);
+
     res.send(name);
 });
 
 
 app.get('/getUploadFiles', function(req, res) {
     // path.join(__dirname, 'view/geojson')
-
+// var SingaporePools = JSON.parse(fs.readFileSync(SPdir, "utf8"));
     var directory = path.join(__dirname, 'view/uploads');
-    var name = fs.readdirSync(directory);
-    res.send(name);
+    var names = fs.readdirSync(directory);
+     for (var i = 1; i < names.length ; i++){
+        var name = names[i];
+        var dir = path.join(__dirname,"/view/uploads",name);
+        // console.log(dir);
+
+        var size = fs.readFileSync(dir, "utf8");
+        res.send(size);
+    }
+    
 });
 // end read all files from folder 
 
