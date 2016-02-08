@@ -137,7 +137,7 @@ app.post('/upload', upload.array('avatar'), function(req, res) {
     //     // console.log(file);
 
 
-        convert(directory, nameFirstPark);
+        convert(filePath, nameFirstPark);
     // }
  
 
