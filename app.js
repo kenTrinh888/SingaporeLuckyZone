@@ -137,7 +137,7 @@ app.post('/upload', upload.array('avatar'), function(req, res) {
     //     // console.log(file);
 
 
-        convert(filePath, nameFirstPark,"geojson");
+        convert(directory, nameFirstPark,"geojson");
     // }
  
 
@@ -187,7 +187,7 @@ app.get("/removeGeojsonLayer",function (req,res){
 // convert shapefile to geojson
 function convert(file, name,directory) {
 
-    console.log(file);
+    console.log("file content: " + file);
     var nameofFile = name + ".geojson"
     var urlDestination = path.join(__dirname,"view",directory,nameofFile)
     var FILE = ogr2ogr(file)
