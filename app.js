@@ -117,7 +117,7 @@ app.post('/upload', upload.array('avatar'), function(req, res) {
     var nameString = getSecondPart(name);
     var nameFirstPark = getFirstPart(name);
     var file = __dirname + "/" + name;
-    var directory = path.join(__dirname, 'view/uploads/',name);
+    var directory = path.join(__dirname, '../view/uploads/',name);
 
     var filePath = req.files[0].path;
     // var directory = path.join(__dirname, 'view/geojson');
