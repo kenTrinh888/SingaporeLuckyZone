@@ -149,7 +149,12 @@ app.post('/upload', upload.array('avatar'), function(req, res) {
     // }
  
 
-
+     var from = "view/uploads" + "/"+name;
+    console.log(from);
+    var destination = "view/geojson/" + nameFirstPark +'.geojson' ;
+    console.log(destination);
+    var command = '-i ' + from + ' -o ' + destination + ' format=geojson force'
+    mapshaper.runCommands(command);
 
     res.redirect("back");
 
