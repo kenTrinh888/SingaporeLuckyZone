@@ -61,8 +61,8 @@ var result = {
  
 var file = globalurl + '/basemap/result.json';
 // make directory
-var dirForGeojson = __dirname +  './view/geojson';
-var dirForUploadsFiles = __dirname + './view/uploads';
+var dirForGeojson = __dirname +  '/view/geojson';
+var dirForUploadsFiles = __dirname + '/view/uploads';
 
 
 if (!fs.existsSync(dirForGeojson)){
