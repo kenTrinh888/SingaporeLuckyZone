@@ -60,8 +60,17 @@ var result = {
 };
  
 var file = globalurl + '/basemap/result.json';
+// make directory
+var dirForGeojson = __dirname +  './view/geojson';
+var dirForUploadsFiles = __dirname + './view/uploads';
 
- 
+
+if (!fs.existsSync(dirForGeojson)){
+    fs.mkdirSync(dirForGeojson);
+}
+if (!fs.existsSync(dirForUploadsFiles)){
+    fs.mkdirSync(dirForUploadsFiles);
+}
 
 // app.get("/getResult", function (req,res){
 //     // var resultSend = JSON
