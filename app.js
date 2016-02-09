@@ -113,7 +113,6 @@ app.post('/upload', upload.array('avatar'), function(req, res) {
     // var newPath = __dirname + "/uploads/uploadedFileName";
 
     var name = req.files[0].originalname;
-    console.log(name);
     var nameString = getSecondPart(name);
     var nameFirstPark = getFirstPart(name);
     var file = __dirname + "/" + name;
@@ -244,7 +243,7 @@ app.get('/getUploadFiles', function(req, res) {
     var names = fs.readdirSync(directory);
      for (var i = 1; i < names.length ; i++){
         var name = names[i];
-        var dir = path.join(__dirname,name);
+        var dir = path.join(directory,name);
         // console.log(dir);
 
         var fileUploads = fs.readFileSync(dir, "utf8");
