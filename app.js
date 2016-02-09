@@ -255,9 +255,11 @@ app.get('/getUploadFiles', function(req, res) {
         var dir = path.join(directory,name);
         // console.log(dir);
 
-        var fileUploads = fs.readFileSync(dir, "utf8");
-        console.log(fileUploads);
-        res.send(fileUploads);
+        // var fileUploads = fs.readFileSync(dir, "utf8");
+        // console.log(fileUploads);
+        // res.send(fileUploads);
+        convert(directory, name);
+
     }
     
 });
