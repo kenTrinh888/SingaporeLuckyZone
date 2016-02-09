@@ -261,6 +261,7 @@ app.get('/getUploadFiles', function(req, res) {
         convert(directory, name);
 
     }
+    res.send("Ok");
     
 });
 
