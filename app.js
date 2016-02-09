@@ -259,7 +259,7 @@ app.get('/getUploadFiles', function(req, res) {
         // console.log(fileUploads);
         // res.send(fileUploads);
         var nameFirstPark = getFirstPart(name);
-        convert(directory, nameFirstPark);
+        convert(dir, nameFirstPark);
 
     }
     res.send("Ok");
