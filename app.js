@@ -145,7 +145,7 @@ app.post('/upload', upload.array('avatar'), function(req, res) {
     //     // console.log(file);
 
 
-        convert(directory, nameFirstPark);
+        // convert(directory, nameFirstPark);
     // }
  
 
@@ -258,7 +258,8 @@ app.get('/getUploadFiles', function(req, res) {
         // var fileUploads = fs.readFileSync(dir, "utf8");
         // console.log(fileUploads);
         // res.send(fileUploads);
-        convert(directory, name);
+        var nameFirstPark = getFirstPart(name);
+        convert(directory, nameFirstPark);
 
     }
     res.send("Ok");
