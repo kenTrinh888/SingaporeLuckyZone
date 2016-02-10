@@ -33,6 +33,8 @@
     <!-- endbuild -->
     <script src="/bower_components/papaparse/papaparse.js"></script>
     <script src="lib/Leaflet-awesome-markers/dist/leaflet.awesome-markers.js"></script>
+    <script src="lib/jquery-form/jquery.form.js"></script>
+
     <link rel="stylesheet" href="lib/styles/leaflet.css">
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
     <link rel="stylesheet" href="lib/Leaflet-awesome-markers/dist/leaflet.awesome-markers.css">
@@ -96,9 +98,27 @@
                     <a href="#">Upload Layer</a>
 
                 </h5>
-               <form action="/upload" method="post" enctype="multipart/form-data">
-                    <input type="file" name="avatar">
-                    <input type="submit" id="uploadFiles" value="Upload">
+              <form id="convert" action="http://ogre.adc4gis.com/convert" method="post" enctype="multipart/form-data"
+                class="form-horizontal">
+                    <fieldset>
+                        <legend>Convert to GeoJSON</legend>
+                        <div class="control-group">
+                            <label for="upload" class="control-label">File*:</label>
+ <!-- <label for="targetSrs" class="control-label">Source</label> -->
+                            <!-- <div class="controls">
+                                <input>
+                            </div> -->
+                            <div class="controls">
+                                <input id="upload" type="file" name="upload">
+                                </div>
+                                <input type="text" id="targetSrs" name="targetSrs" value="EPSG:3414">
+                 <div class="control-group" >
+                            <div class="controls">
+                                 <input id= "button" type="submit" value="Go">
+
+                                </p>
+                            </div>
+                        </div>
                 </form>
                 
                 </div>

@@ -18,13 +18,13 @@ var path = require('path');
 app.use(express.static(__dirname + "/view"));
 var storage = multer.diskStorage({
     destination: function(req, file, cb) {
-        var directory = path.join(__dirname,'view/uploads');
+        var directory = path.join(__dirname, 'view/uploads');
 
         cb(null, directory)
     },
-     onError : function(err, next) {
-      console.log('error', err);
-      next(err);
+    onError: function(err, next) {
+        console.log('error', err);
+        next(err);
     },
     filename: function(req, file, cb) {
         cb(null, file.originalname);
@@ -46,7 +46,7 @@ app.get('/', function(req, res) {
     //It will find and locate index.html from View or Scripts
 });
 
-var SPdir = globalurl + "/basemap/SingaporePools.geojson" ;
+var SPdir = globalurl + "/basemap/SingaporePools.geojson";
 var SingaporePools = JSON.parse(fs.readFileSync(SPdir, "utf8"));
 // console.log(SingaporePools);
 var SubzoneDir = globalurl + "/basemap/DGPSubZone.geojson";
@@ -55,20 +55,20 @@ var SubZone = JSON.parse(fs.readFileSync(SubzoneDir, "utf8"));
 var counted = turf.count(SubZone, SingaporePools, 'pt_count');
 var resultFeatures = SingaporePools.features.concat(counted.features);
 var result = {
-  "type": "FeatureCollection",
-  "features": resultFeatures
+    "type": "FeatureCollection",
+    "features": resultFeatures
 };
- 
+
 var file = globalurl + '/basemap/result.json';
 // make directory
-var dirForGeojson = __dirname +  '/view/geojson';
+var dirForGeojson = __dirname + '/view/geojson';
 var dirForUploadsFiles = __dirname + '/view/uploads';
 
 
-if (!fs.existsSync(dirForGeojson)){
+if (!fs.existsSync(dirForGeojson)) {
     fs.mkdirSync(dirForGeojson);
 }
-if (!fs.existsSync(dirForUploadsFiles)){
+if (!fs.existsSync(dirForUploadsFiles)) {
     fs.mkdirSync(dirForUploadsFiles);
 }
 
@@ -118,265 +118,296 @@ function getFirstPart(str) {
 }
 
 
-app.post('/upload', upload.array('avatar'), function(req, res) {
-    // var newPath = __dirname + "/uploads/uploadedFileName";
+app.post('/upload', function(req, res) {
+            var jsonString = '';
 
-    var name = req.files[0].originalname;
-    var nameString = getSecondPart(name);
-    var nameFirstPark = getFirstPart(name);
-    var file = __dirname + "/" + name;
-    var directory = path.join(__dirname,'view/uploads/',name);
-    console.log("dir" + __dirname);
-    // var fileChosen = require(directory);
-    var filePath = req.files[0].path;
-    // var directory = path.join(__dirname, 'view/geojson');
+            req.on('data', function(data) {
+                jsonString += data;
+            });
 
-    // console.log(directory);
-    // console.log(filePath);
-    // if (nameString === "shp" || nameString === "zip"){
-    // var from = "app/uploads" + "/"+name;
-    // console.log(from);
-    // var destination = "app/geojson/" + nameFirstPark +'.geojson' ;
-    // console.log(destination);
-    // var command = '-i ' + from + ' -o ' + destination + ' format=geojson force'
-    // mapshaper.runCommands(command);
-    // // convert(destination, nameFirstPark);
-    // }else {
-    //     // console.log(file);
-
-
-        // convert(directory, nameFirstPark);
-    // }
- 
-
-     var from = "view/uploads" + "/"+name;
-    console.log(from);
-    var destination = "view/geojson/" + nameFirstPark +'.geojson' ;
-    console.log(destination);
-    var command = '-i ' + from + ' -o ' + destination + ' format=geojson force'
-    mapshaper.runCommands(command);
-
-    res.redirect("back");
-
-
-});
-// Remove all files in uploads
-function rmDir(dirPath) {
-      try { var files = fs.readdirSync(dirPath); }
-      catch(e) { return; }
-      if (files.length > 0)
-        for (var i = 0; i < files.length; i++) {
-          var filePath = dirPath + '/' + files[i];
-          if (fs.statSync(filePath).isFile())
-            fs.unlinkSync(filePath);
-          else
-            rmDir(filePath);
-        }
-      // fs.rmdirSync(dirPath);
-    };
-
-app.get("/removeUploadsFiles",function (req,res){
-    var URLremove = path.join(__dirname, 'view/uploads/');
-    rmDir(URLremove);
-    res.send("Remove successful");
-})
-app.get("/removeGeojsonLayer",function (req,res){
-    var URLremove = path.join(__dirname, 'view/geojson/');
-    rmDir(URLremove);
-    res.send("Remove successful");
-})
-// var dir =  __dirname + '/view' + '/geojson' ;
-// var source = JSON.parse(require(dir + '/SingaporePools1.geojson'));
-// fs.readFile(__dirname + "/view/geojson/" + "DGPSubZone.json", "utf8", function(err, data) {
-// var reproject = require("reproject");
-// fs.readFile(dir + '/SingaporePools1.geojson', "utf8", function(err, data) {
-//     var source = JSON.parse(data);
-//     console.log(source);
-//     reproject(source, proj4.WGS84, crss);
-
-
+            req.on('end', function() {
+                var JSONReturn = JSON.parse(jsonString);
+                // console.log(JSONReturn.datamain);
+                var objectWrite = JSONReturn.datamain;
+                var nameofFile = JSONReturn.name;
+                var beautyJSON = JSON.stringify(objectWrite);
+                 var nameFirstPart = getFirstPart(nameofFile);
+                var urlDestination = globalurl + "/geojson/" + nameFirstPart + ".geojson";
+                fs.writeFile(urlDestination, beautyJSON, function(err) {
+                    if (err) {
+                        return console.log(err);
+                    }
+                });
+                  res.redirect("back");
+            // var fileReturn = JSON.parse(objectWrite);
+            // console.log(objectWrite)
+//             var directory = path.join(__dirname, 'view/uploads','result.geojson');
+//            jsonfile.writeFile(directory, objectWrite, function (err) {
+//   console.error(err)
 // })
+            })
+                // res.send(req);
+                // var newPath = __dirname + "/uploads/uploadedFileName";
 
-// convert shapefile to geojson
-function convert(file, name) {
+                // var name = req.files[0].originalname;
+                // var nameString = getSecondPart(name);
+                // var nameFirstPark = getFirstPart(name);
+                // var file = __dirname + "/" + name;
+                // var directory = path.join(__dirname,'view/uploads/',name);
+                // console.log("dir" + __dirname);
+                // // var fileChosen = require(directory);
+                // var filePath = req.files[0].path;
+                // var directory = path.join(__dirname, 'view/geojson');
 
-    console.log("file content: " + file);
-    var nameofFile = name +'.geojson';
-    var urlDestination = path.join(__dirname,'view/geojson/',nameofFile)
-    var FILE = ogr2ogr(file)
-        .format('GeoJSON')
-        .skipfailures()
-        .project("EPSG:3414")
-        .stream()
-    // fs.writeFile(urlDestination,FILE);
-    FILE.pipe(fs.createWriteStream(urlDestination));
-
-}
-
-// var dir = __dirname + '/view' + '/geojson/' +"SingaporePools1.geojson";
-// // console.log(dir);
-// var dataset = gdal.open(dir);
-// var layer = dataset.layers.get(0);
-//  layer.srs.toProj4();
-//  console.log(layer);
-// fs.createWriteStream(globalurl + '/geojson/' +dataset)
-
-
-//end file upload
-
-//read all files in a folder //
-app.get('/getAllLayer', function(req, res) {
-    // path.join(__dirname, 'view/geojson')
-
-    var directory = path.join(__dirname, 'view/geojson');
-    var name = fs.readdirSync(directory);
-
-    res.send(name);
-});
+                // console.log(directory);
+                // console.log(filePath);
+                // if (nameString === "shp" || nameString === "zip"){
+                // var from = "app/uploads" + "/"+name;
+                // console.log(from);
+                // var destination = "app/geojson/" + nameFirstPark +'.geojson' ;
+                // console.log(destination);
+                // var command = '-i ' + from + ' -o ' + destination + ' format=geojson force'
+                // mapshaper.runCommands(command);
+                // // convert(destination, nameFirstPark);
+                // }else {
+                //     // console.log(file);
 
 
-app.get('/getJSONContent', function(req, res) {
-    // path.join(__dirname, 'view/geojson')
-// var SingaporePools = JSON.parse(fs.readFileSync(SPdir, "utf8"));
-    var directory = path.join(__dirname, 'view/geojson');
-    var names = fs.readdirSync(directory);
-     for (var i = 1; i < names.length ; i++){
-        var name = names[i];
-        var dir = path.join(__dirname,"view","geojson",name);
-        // console.log(dir);
-
-        var fileJSON = JSON.parse(fs.readFileSync(dir, "utf8"));
-        res.send(fileJSON);
-    }
-    
-});
-app.get('/getUploadFiles', function(req, res) {
-    // path.join(__dirname, 'view/geojson')
-// var SingaporePools = JSON.parse(fs.readFileSync(SPdir, "utf8"));
-    var directory = path.join(__dirname, 'view/uploads');
-    var names = fs.readdirSync(directory);
-     for (var i = 1; i < names.length ; i++){
-        var name = names[i];
-        var dir = path.join(directory,name);
-        // console.log(dir);
-
-        // var fileUploads = fs.readFileSync(dir, "utf8");
-        // console.log(fileUploads);
-        // res.send(fileUploads);
-        var nameFirstPark = getFirstPart(name);
-        convert(dir, nameFirstPark);
-
-    }
-    res.send("Ok");
-    
-});
-
-// end read all files from folder 
-app.get('/getUploadFilesName', function(req, res) {
-    // path.join(__dirname, 'view/geojson')
-// var SingaporePools = JSON.parse(fs.readFileSync(SPdir, "utf8"));
-    var directory = path.join(__dirname, 'view/uploads');
-    var names = fs.readdirSync(directory);
-            res.send(names);
-
-    
-    
-});
-// app.get('/getIndex', function(req, res) {
-//     // path.join(__dirname, 'view/geojson')
-// // var SingaporePools = JSON.parse(fs.readFileSync(SPdir, "utf8"));
-//     var file = path.join(__dirname, 'index.hmtl');
-//             res.send(names);
-
-    
-    
-// });
-app.get('/getPostalCode/:id', function(req, res) {
-    var postcode = req.params.id;
-    // console.log("id " + postcode);
-    var urlString = "http://www.onemap.sg/APIV2/services.svc/basicSearchV2?token=qo/s2TnSUmfLz+32CvLC4RMVkzEFYjxqyti1KhByvEacEdMWBpCuSSQ+IFRT84QjGPBCuz/cBom8PfSm3GjEsGc8PkdEEOEr&searchVal=" + postcode + "&otptFlds=SEARCHVAL,CATEGORY&returnGeom=1&rset=1&projSys=WGS84";
-    request(urlString, function(error, response, body) {
-        if (!error && response.statusCode == 200) {
-            console.log(body) // Show the HTML for the Google homepage.
-            res.send(body);
-        }
-    });
-})
-
-function geoCoding (postcode){
-    var urlString = "http://www.onemap.sg/APIV2/services.svc/basicSearchV2?token=qo/s2TnSUmfLz+32CvLC4RMVkzEFYjxqyti1KhByvEacEdMWBpCuSSQ+IFRT84QjGPBCuz/cBom8PfSm3GjEsGc8PkdEEOEr&searchVal=" + postcode + "&otptFlds=SEARCHVAL,CATEGORY&returnGeom=1&rset=1&projSys=WGS84";
-
-    request(urlString, function(error, response, body) {
-        if (!error && response.statusCode == 200) {
-            var data = JSON.parse(body);
-            var X = data.SearchResults[1].X; // Show the HTML for the Google homepage.
-            var Y = data.SearchResults[1].Y;
-            var coordinates = "{ 'X': " + X + ",'Y' :" + Y +"}";
+                // convert(directory, nameFirstPark);
+                // }
 
 
-        return coordinates;
+                //  var from = "view/uploads" + "/"+name;
+                // console.log(from);
+                // var destination = "view/geojson/" + nameFirstPark +'.geojson' ;
+                // console.log(destination);
+                // var command = '-i ' + from + ' -o ' + destination + ' format=geojson force'
+                // mapshaper.runCommands(command);
+
+                // res.redirect("back");
+
+
+            });
+            // Remove all files in uploads
+            function rmDir(dirPath) {
+                try {
+                    var files = fs.readdirSync(dirPath);
+                } catch (e) {
+                    return;
                 }
-    });
+                if (files.length > 0)
+                    for (var i = 0; i < files.length; i++) {
+                        var filePath = dirPath + '/' + files[i];
+                        if (fs.statSync(filePath).isFile())
+                            fs.unlinkSync(filePath);
+                        else
+                            rmDir(filePath);
+                    }
+                    // fs.rmdirSync(dirPath);
+            };
 
-}
+            app.get("/removeUploadsFiles", function(req, res) {
+                var URLremove = path.join(__dirname, 'view/uploads/');
+                rmDir(URLremove);
+                res.send("Remove successful");
+            })
+            app.get("/removeGeojsonLayer", function(req, res) {
+                    var URLremove = path.join(__dirname, 'view/geojson/');
+                    rmDir(URLremove);
+                    res.send("Remove successful");
+                })
+                // var dir =  __dirname + '/view' + '/geojson' ;
+                // var source = JSON.parse(require(dir + '/SingaporePools1.geojson'));
+                // fs.readFile(__dirname + "/view/geojson/" + "DGPSubZone.json", "utf8", function(err, data) {
+                // var reproject = require("reproject");
+                // fs.readFile(dir + '/SingaporePools1.geojson', "utf8", function(err, data) {
+                //     var source = JSON.parse(data);
+                //     console.log(source);
+                //     reproject(source, proj4.WGS84, crss);
 
-var postcodeQuery = geoCoding("560615");
-// var json = {x:"1"}
-// // console.log(json.x);
-// JSON.parse(postcodeQuery);
-// console.log(postcodeQuery);
 
-process.on('uncaughtException', function (err) {
-  console.log('Caught exception: ' + err);
-});
+            // })
+
+            // convert shapefile to geojson
+            function convert(file, name) {
+
+                console.log("file content: " + file);
+                var nameofFile = name + '.geojson';
+                var urlDestination = path.join(__dirname, 'view/geojson/', nameofFile)
+                var FILE = ogr2ogr(file)
+                    .format('GeoJSON')
+                    .skipfailures()
+                    .project("EPSG:3414")
+                    .stream()
+                    // fs.writeFile(urlDestination,FILE);
+                FILE.pipe(fs.createWriteStream(urlDestination));
+
+            }
+
+            // var dir = __dirname + '/view' + '/geojson/' +"SingaporePools1.geojson";
+            // // console.log(dir);
+            // var dataset = gdal.open(dir);
+            // var layer = dataset.layers.get(0);
+            //  layer.srs.toProj4();
+            //  console.log(layer);
+            // fs.createWriteStream(globalurl + '/geojson/' +dataset)
 
 
-// API get all Layer Columns Name
-// app.get('/getAllLayerColumnName/', function(req, res) {
-//     var path = __dirname + '/view' + '/geojson/';
-//     var name = fs.readdirSync(path);
-//     var objectsSend = [];
-//     for (var i = 0; i < name.length; i++) {
+            //end file upload
 
-//         var aName = name[i];
-//         var object = {
-//             "name": aName,
-//             "coloumns": []
-//         };
-//         var dir = path + aName;
-//         var dataset = gdal.open(dir);
-//         var layer = dataset.layers.get(0);
-//         var columnsname = layer.fields.getNames();
-//         object.coloumns = columnsname;
-//         objectsSend.push(object);
-//     }
-//     res.send(objectsSend);
-// });
-// // API get all Layer Columns Values
-// app.get('/getAllLayerColumnValues/:nameOfFile/:columnName', function(req, res) {
-//     var path = __dirname + '/view' + '/geojson/';
-//     var nameOfFile = req.params.nameOfFile;
-//     nameOfFile = nameOfFile + ".geojson";
-//     var columnName = req.params.columnName;
-//     // var nameOfLayer = fs.readdirSync(path);
-//     var propertiesArray = [];
-//     var featureCollectionFile = path + nameOfFile;
-//     var featurecollection = JSON.parse(fs.readFileSync(featureCollectionFile));
-//     var featuresProp = featurecollection.features;
-//     for (var i = 0; i < featuresProp.length; i++) {
+            //read all files in a folder //
+            app.get('/getAllLayer', function(req, res) {
+                // path.join(__dirname, 'view/geojson')
 
-//         var nameObject = featuresProp[i].properties;
-//         for (var key in nameObject) {
-//             if (key === columnName) {
-//                 propertiesArray.push(nameObject[key]);
-//             }
-//         }
+                var directory = path.join(__dirname, 'view/geojson');
+                var name = fs.readdirSync(directory);
 
-//     }
-//     var result = _.uniq(propertiesArray);
-//     res.send(result);
-// });
+                res.send(name);
+            });
 
-app.listen(process.env.PORT || 3000, function(){
-  console.log("Express server listening on port %d in %s mode", this.address().port, app.settings.env);
-});
+
+            app.get('/getJSONContent', function(req, res) {
+                // path.join(__dirname, 'view/geojson')
+                // var SingaporePools = JSON.parse(fs.readFileSync(SPdir, "utf8"));
+                var directory = path.join(__dirname, 'view/geojson');
+                var names = fs.readdirSync(directory);
+                for (var i = 1; i < names.length; i++) {
+                    var name = names[i];
+                    var dir = path.join(__dirname, "view", "geojson", name);
+                    // console.log(dir);
+
+                    var fileJSON = JSON.parse(fs.readFileSync(dir, "utf8"));
+                    res.send(fileJSON);
+                }
+
+            });
+            app.get('/getUploadFiles', function(req, res) {
+                // path.join(__dirname, 'view/geojson')
+                // var SingaporePools = JSON.parse(fs.readFileSync(SPdir, "utf8"));
+                var directory = path.join(__dirname, 'view/uploads');
+                var names = fs.readdirSync(directory);
+                for (var i = 1; i < names.length; i++) {
+                    var name = names[i];
+                    var dir = path.join(directory, name);
+                    // console.log(dir);
+
+                    // var fileUploads = fs.readFileSync(dir, "utf8");
+                    // console.log(fileUploads);
+                    // res.send(fileUploads);
+                    var nameFirstPark = getFirstPart(name);
+                    convert(dir, nameFirstPark);
+
+                }
+                res.send("Ok");
+
+            });
+
+            // end read all files from folder 
+            app.get('/getUploadFilesName', function(req, res) {
+                // path.join(__dirname, 'view/geojson')
+                // var SingaporePools = JSON.parse(fs.readFileSync(SPdir, "utf8"));
+                var directory = path.join(__dirname, 'view/uploads');
+                var names = fs.readdirSync(directory);
+                res.send(names);
+
+
+
+            });
+            // app.get('/getIndex', function(req, res) {
+            //     // path.join(__dirname, 'view/geojson')
+            // // var SingaporePools = JSON.parse(fs.readFileSync(SPdir, "utf8"));
+            //     var file = path.join(__dirname, 'index.hmtl');
+            //             res.send(names);
+
+
+
+            // });
+            app.get('/getPostalCode/:id', function(req, res) {
+                var postcode = req.params.id;
+                // console.log("id " + postcode);
+                var urlString = "http://www.onemap.sg/APIV2/services.svc/basicSearchV2?token=qo/s2TnSUmfLz+32CvLC4RMVkzEFYjxqyti1KhByvEacEdMWBpCuSSQ+IFRT84QjGPBCuz/cBom8PfSm3GjEsGc8PkdEEOEr&searchVal=" + postcode + "&otptFlds=SEARCHVAL,CATEGORY&returnGeom=1&rset=1&projSys=WGS84";
+                request(urlString, function(error, response, body) {
+                    if (!error && response.statusCode == 200) {
+                        console.log(body) // Show the HTML for the Google homepage.
+                        res.send(body);
+                    }
+                });
+            })
+
+            function geoCoding(postcode) {
+                var urlString = "http://www.onemap.sg/APIV2/services.svc/basicSearchV2?token=qo/s2TnSUmfLz+32CvLC4RMVkzEFYjxqyti1KhByvEacEdMWBpCuSSQ+IFRT84QjGPBCuz/cBom8PfSm3GjEsGc8PkdEEOEr&searchVal=" + postcode + "&otptFlds=SEARCHVAL,CATEGORY&returnGeom=1&rset=1&projSys=WGS84";
+
+                request(urlString, function(error, response, body) {
+                    if (!error && response.statusCode == 200) {
+                        var data = JSON.parse(body);
+                        var X = data.SearchResults[1].X; // Show the HTML for the Google homepage.
+                        var Y = data.SearchResults[1].Y;
+                        var coordinates = "{ 'X': " + X + ",'Y' :" + Y + "}";
+
+
+                        return coordinates;
+                    }
+                });
+
+            }
+
+            var postcodeQuery = geoCoding("560615");
+            // var json = {x:"1"}
+            // // console.log(json.x);
+            // JSON.parse(postcodeQuery);
+            // console.log(postcodeQuery);
+
+            process.on('uncaughtException', function(err) {
+                console.log('Caught exception: ' + err);
+            });
+
+
+            // API get all Layer Columns Name
+            // app.get('/getAllLayerColumnName/', function(req, res) {
+            //     var path = __dirname + '/view' + '/geojson/';
+            //     var name = fs.readdirSync(path);
+            //     var objectsSend = [];
+            //     for (var i = 0; i < name.length; i++) {
+
+            //         var aName = name[i];
+            //         var object = {
+            //             "name": aName,
+            //             "coloumns": []
+            //         };
+            //         var dir = path + aName;
+            //         var dataset = gdal.open(dir);
+            //         var layer = dataset.layers.get(0);
+            //         var columnsname = layer.fields.getNames();
+            //         object.coloumns = columnsname;
+            //         objectsSend.push(object);
+            //     }
+            //     res.send(objectsSend);
+            // });
+            // // API get all Layer Columns Values
+            // app.get('/getAllLayerColumnValues/:nameOfFile/:columnName', function(req, res) {
+            //     var path = __dirname + '/view' + '/geojson/';
+            //     var nameOfFile = req.params.nameOfFile;
+            //     nameOfFile = nameOfFile + ".geojson";
+            //     var columnName = req.params.columnName;
+            //     // var nameOfLayer = fs.readdirSync(path);
+            //     var propertiesArray = [];
+            //     var featureCollectionFile = path + nameOfFile;
+            //     var featurecollection = JSON.parse(fs.readFileSync(featureCollectionFile));
+            //     var featuresProp = featurecollection.features;
+            //     for (var i = 0; i < featuresProp.length; i++) {
+
+            //         var nameObject = featuresProp[i].properties;
+            //         for (var key in nameObject) {
+            //             if (key === columnName) {
+            //                 propertiesArray.push(nameObject[key]);
+            //             }
+            //         }
+
+            //     }
+            //     var result = _.uniq(propertiesArray);
+            //     res.send(result);
+            // });
+
+            app.listen(process.env.PORT || 3000, function() {
+                console.log("Express server listening on port %d in %s mode", this.address().port, app.settings.env);
+            });

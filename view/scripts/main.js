@@ -28,7 +28,7 @@ var redMarker = L.AwesomeMarkers.icon({
 proj4.defs("EPSG:3414", "+proj=tmerc +lat_0=1.366666666666667 +lon_0=103.8333333333333 +k=1 +x_0=28001.642 +y_0=38744.572 +ellps=WGS84 +units=m +no_defs");
 console.log("app start");
 $.get("/getAllLayer", function(data) {
-    
+
 
     var names = data;
     console.log(names);
@@ -36,7 +36,7 @@ $.get("/getAllLayer", function(data) {
         var name = names[i];
         console.log("start to get all layers");
         var urlString = '/geojson/' + name;
-                console.log(urlString);
+        console.log(urlString);
 
         $.getJSON(urlString, function(dataLoop) {
             console.log(dataLoop);
@@ -54,6 +54,35 @@ $.get("/getAllLayer", function(data) {
         });
     }
 })
+$('#convert').submit(function(e) {
+    var file = $("#upload")[0].files[0];
+
+    var layerName = file.name;
+    
+    e.preventDefault();
+    $(this).ajaxSubmit({
+        // console.log("submit");
+        success: function(data, textStatus, jqXHR) {
+            var layer = {"name" : layerName,"datamain" : data}
+            // layer.data = data
+            var dataSend = JSON.stringify(layer);
+            // console.log(dataSend);
+          $.ajax({
+            url: '/upload',    
+                        type: 'POST',
+                        data: dataSend,
+                        contentType: 'application/json',
+                                          
+                        success: function(data) {
+                            console.log('success');
+                            location.reload();
+                        }
+                    });
+        }
+
+    })
+
+});
 
 // $.getJSON("basemap/SingaporePools.geojson", function(data) {
 //      L.Proj.geoJson(data, {
@@ -74,7 +103,12 @@ $.get("/getAllLayer", function(data) {
 //      L.Proj.geoJson(data).addTo(map);
 
 // })
+
+
+
 $.getJSON("/basemap/result.geojson", function(data) {
     L.Proj.geoJson(data).addTo(map);
 
 })
+
+
