@@ -271,14 +271,18 @@ app.post('/upload', function(req, res) {
                 // var SingaporePools = JSON.parse(fs.readFileSync(SPdir, "utf8"));
                 var directory = path.join(__dirname, 'view/geojson');
                 var names = fs.readdirSync(directory);
+                var ArraySend;
+                var objectSend ={};
                 for (var i = 1; i < names.length; i++) {
                     var name = names[i];
                     var dir = path.join(__dirname, "view", "geojson", name);
                     // console.log(dir);
 
                     var fileJSON = JSON.parse(fs.readFileSync(dir, "utf8"));
-                    res.send(fileJSON);
+                    objectSend[name]=fileJSON;
+                    
                 }
+                res.send(objectSend);
 
             });
             app.get('/getUploadFiles', function(req, res) {
