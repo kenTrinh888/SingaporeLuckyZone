@@ -162,7 +162,7 @@ $('#changeMarkerForm').submit(function() {
             layerControl = L.control.layers().addTo(map);
         }
         var nameDisplay = nameofLayer + "-Icon:" + iconType + "-Color:" + holdercolor;
-        layerControl.addOverlay(layerdata, nameofLayer);
+        layerControl.addOverlay(layerdata, nameDisplay);
     })
 });
 
