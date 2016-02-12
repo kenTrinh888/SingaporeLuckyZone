@@ -25,7 +25,7 @@ proj4.defs("EPSG:3414", "+proj=tmerc +lat_0=1.366666666666667 +lon_0=103.8333333
 $.get("/getAllLayer", function(data) {
     var names = data;
     if (names.length === 0){
-        $('#layerselection').append($('<option>').text("Addtional Layer hasn't been uploaded").attr('value', "no layer"));
+        $('#layerselection').append($('<option>').text("No Layer uploaded").attr('value', "no layer"));
 
     }else{
     for (var i = 0; i < names.length; i++) {
