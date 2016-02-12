@@ -6,45 +6,42 @@ var cities, map = L.map('map', {
     zoom: 12
 });
 
-// features = JSON.parse(feature);
-// omnivore.geojson(features).addTo(map);
-
-// $.getJSON('/geojson/PLAYSG.json', function(data) {
-//     omnivore.geojson(data).addTo(map);
-// })
+// ============================Open Streetmap Base========================================================
 new L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     minZoom: 0,
     maxZoom: 15,
     attribution: 'Map data © <a href="https://www.openstreetmap.org">OpenStreetMap contributors</a>'
 }).addTo(map);
-// geocoding
-// new L.Control.GeoSearch({
-//     provider: new L.GeoSearch.Provider.OpenStreetMap(),
-//     position: 'topcenter',
-//     showMarker: true,
-//     retainZoomLevel: false,
-// }).addTo(map);
-// end geocoding
-// omnivore.geojson('/geojson/PLAYSG.json').addTo(map);
+// ============================Open Streetmap Base========================================================
+// ============================GeoCoding========================================================
+L.Control.geocoder().addTo(map);
+// ============================GeoCoding========================================================
 
-// var Marker = L.AwesomeMarkers.icon({
-//     icon: 'sitemap',
-//     markerColor: 'blue',
-//     prefix: 'fa'
-// });
+// ============================Marker Selection========================================================
 var colorMarker = ['red', 'darkred', 'orange', 'green', 'darkgreen', 'blue', 'purple', 'darkpuple', 'cadetblue'];
 var markerName = ["automobile", "bank", "bar-chart", "beer", "bell", "bed", "calendar", "cloud", "coffee", "comment"];
 proj4.defs("EPSG:3414", "+proj=tmerc +lat_0=1.366666666666667 +lon_0=103.8333333333333 +k=1 +x_0=28001.642 +y_0=38744.572 +ellps=WGS84 +units=m +no_defs");
 // var controlLayers = L.control.layers().addTo(map);
 $.get("/getAllLayer", function(data) {
     var names = data;
-    for (var i = 1; i < names.length; i++) {
+    if (names.length === 0){
+        $('#layerselection').append($('<option>').text("No Layer has been uploaded").attr('value', "no layer"));
+
+    }else{
+    for (var i = 0; i < names.length; i++) {
         var nameofLayer = names[i];
         $('#layerselection').append($('<option>').text(nameofLayer).attr('value', nameofLayer));
 
     }
+}
 
 })
+for (var i = 1; i < colorMarker.length; i++) {
+        var nameofMarkerColor = colorMarker[i];
+        $('#markercolor').append($('<option>').text(nameofMarkerColor).attr('value', nameofMarkerColor));
+
+    }
+// ============================Marker Selection========================================================
 
 
 var layerControl = false;
@@ -365,7 +362,7 @@ function createLegend(min, max) {
             L.DomEvent.stopPropagation(e);
         });
 
-        $(legendContainer).append("<h2 id='legendTitle'># of somethings</h2>");
+        $(legendContainer).append("<h2 id='legendTitle'>Number of Wins</h2>");
 
         for (var i = 0; i < classes.length; i++) {
 

@@ -33,6 +33,11 @@
     <script src="/bower_components/papaparse/papaparse.js"></script>
     <script src="lib/Leaflet-awesome-markers/dist/leaflet.awesome-markers.js"></script>
     <script src="lib/jquery-form/jquery.form.js"></script>
+    <!-- geocoding -->
+<link rel="stylesheet" href="lib/geocode/Control.Geocoder.css" />
+<script src="lib/geocode/Control.Geocoder.js"></script>
+
+
     <link rel="stylesheet" href="lib/styles/leaflet.css">
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
     <link rel="stylesheet" href="lib/Leaflet-awesome-markers/dist/leaflet.awesome-markers.css">
@@ -127,11 +132,12 @@
                         </fieldset>
                         <fieldset class="form-group">
                             <label>Color</label>
-                            <input type="text" name="holdercolor" value="Red">
+                            <select type="text" id= "markercolor" name="holdercolor" >
+                            </select>
                         </fieldset>
                         <fieldset class="form-group">
                             <label>Icon</label>
-                            <input type="text" name="iconcolor" value="Coffee">
+                            <input type="text" name="iconcolor" value="coffee">
                         </fieldset>
                         <input type="submit" value="Submit" >
                     </form>
