@@ -52,14 +52,31 @@ var SingaporePools = JSON.parse(fs.readFileSync(SPdir, "utf8"));
 var SubzoneDir = globalurl + "/basemap/DGPSubZone.geojson";
 var SubZone = JSON.parse(fs.readFileSync(SubzoneDir, "utf8"));
 
-var counted = turf.count(SubZone, SingaporePools, 'pt_count');
-var resultFeatures = SingaporePools.features.concat(counted.features);
-var result = {
-    "type": "FeatureCollection",
-    "features": resultFeatures
-};
+var averaged = turf.average(
+ SubZone, SingaporePools, 'Gp1Gp2Winn', 'AveragedWins');
 
-var file = globalurl + '/basemap/result.json';
+// var resultFeatures = SingaporePools.features.concat(
+//   averaged.features);
+// var resultFeatures = SingaporePools.features.concat(
+//   averaged.features);
+
+// var result = {
+//    //  "type": "FeatureCollection",
+//    //  "crs":{  
+//    //    "type":"name",
+//    //    "properties":{  
+//    //       "name":"urn:ogc:def:crs:EPSG::3414"
+//    //    }
+//    // },
+//     "features": averaged
+// };
+
+var file = globalurl + '/basemap/result.geojson';
+fs.writeFile(globalurl + "/basemap/result.geojson", JSON.stringify(averaged), function(err) {
+    if(err) {
+        return console.log(err);
+    }
+})
 // make directory
 var dirForGeojson = __dirname + '/view/geojson';
 var dirForUploadsFiles = __dirname + '/view/uploads';
@@ -84,7 +101,7 @@ if (!fs.existsSync(dirForUploadsFiles)) {
 // fs.createWriteStream(globalurl + '/'+ 'basemap'+ '/' + result + '.geojson');
 // convert(result,"Result","basemap");
 // convert(result,result,"basemap");
-// fs.writeFile(globalurl + "/basemap/result.geojson", result, function(err) {
+// fs.writeFile(globalurl + "/basemap/result.geojson", JSON.stringify(result), function(err) {
 //     if(err) {
 //         return console.log(err);
 //     }
@@ -139,52 +156,9 @@ app.post('/upload', function(req, res) {
                     }
                 });
                   res.redirect("back");
-            // var fileReturn = JSON.parse(objectWrite);
-            // console.log(objectWrite)
-//             var directory = path.join(__dirname, 'view/uploads','result.geojson');
-//            jsonfile.writeFile(directory, objectWrite, function (err) {
-//   console.error(err)
-// })
+           
             })
-                // res.send(req);
-                // var newPath = __dirname + "/uploads/uploadedFileName";
-
-                // var name = req.files[0].originalname;
-                // var nameString = getSecondPart(name);
-                // var nameFirstPark = getFirstPart(name);
-                // var file = __dirname + "/" + name;
-                // var directory = path.join(__dirname,'view/uploads/',name);
-                // console.log("dir" + __dirname);
-                // // var fileChosen = require(directory);
-                // var filePath = req.files[0].path;
-                // var directory = path.join(__dirname, 'view/geojson');
-
-                // console.log(directory);
-                // console.log(filePath);
-                // if (nameString === "shp" || nameString === "zip"){
-                // var from = "app/uploads" + "/"+name;
-                // console.log(from);
-                // var destination = "app/geojson/" + nameFirstPark +'.geojson' ;
-                // console.log(destination);
-                // var command = '-i ' + from + ' -o ' + destination + ' format=geojson force'
-                // mapshaper.runCommands(command);
-                // // convert(destination, nameFirstPark);
-                // }else {
-                //     // console.log(file);
-
-
-                // convert(directory, nameFirstPark);
-                // }
-
-
-                //  var from = "view/uploads" + "/"+name;
-                // console.log(from);
-                // var destination = "view/geojson/" + nameFirstPark +'.geojson' ;
-                // console.log(destination);
-                // var command = '-i ' + from + ' -o ' + destination + ' format=geojson force'
-                // mapshaper.runCommands(command);
-
-                // res.redirect("back");
+              
 
 
             });
@@ -229,11 +203,11 @@ app.post('/upload', function(req, res) {
             // })
 
             // convert shapefile to geojson
-            function convert(file, name) {
+            function convert(file,name) {
 
                 console.log("file content: " + file);
                 var nameofFile = name + '.geojson';
-                var urlDestination = path.join(__dirname, 'view/geojson/', nameofFile)
+                var urlDestination = path.join(__dirname, 'view/geojson', nameofFile)
                 var FILE = ogr2ogr(file)
                     .format('GeoJSON')
                     .skipfailures()
