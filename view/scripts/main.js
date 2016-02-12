@@ -578,10 +578,10 @@ info.update = function(props) {
     var value = props ? props.AveragedWins : null;
     // console.log(value);
     if (value === null) {
-        this._div.innerHTML = '<h4>Average Gp1 and G2 Wins</h4>' + (props ?
+        this._div.innerHTML = '<h4>Average Gp1&Gp2 Wins</h4>' + (props ?
             '<b> Zone:</b>' + props.DGPZ_NAME + '<br />' + '<b> SubZone:</b>' + props.DGPSZ_NAME + '<br />' + "0" + ' win' : 'Hover over a zone');
     } else {
-        this._div.innerHTML = '<h4>Average Gp1 and G2 Wins</h4>' + (props ?
+        this._div.innerHTML = '<h4>Average Gp1&Gp2 Wins</h4>' + (props ?
             '<b> Zone:</b>' + props.DGPZ_NAME + '<br />' + '<b> SubZone:</b>' + props.DGPSZ_NAME + '<br />' + props.AveragedWins + ' win' : 'Hover over a zone');
     }
 
