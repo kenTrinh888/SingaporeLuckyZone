@@ -45,6 +45,12 @@ app.get('/', function(req, res) {
 
     //It will find and locate index.html from View or Scripts
 });
+// app.get('/UserGuide', function(req, res) {
+//     res.sendFile((path.join(__dirname + '/UserGuide.html')));
+
+//     //It will find and locate index.html from View or Scripts
+// });
+
 
 var SPdir = globalurl + "/basemap/SingaporePools.geojson";
 var SingaporePools = JSON.parse(fs.readFileSync(SPdir, "utf8"));
