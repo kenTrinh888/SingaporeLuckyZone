@@ -17,6 +17,14 @@ new L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 15,
     attribution: 'Map data © <a href="https://www.openstreetmap.org">OpenStreetMap contributors</a>'
 }).addTo(map);
+// geocoding
+new L.Control.GeoSearch({
+    provider: new L.GeoSearch.Provider.OpenStreetMap(),
+    position: 'topcenter',
+    showMarker: true,
+    retainZoomLevel: false,
+}).addTo(map);
+// end geocoding
 // omnivore.geojson('/geojson/PLAYSG.json').addTo(map);
 
 // var Marker = L.AwesomeMarkers.icon({
