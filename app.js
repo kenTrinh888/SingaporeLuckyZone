@@ -52,14 +52,19 @@ app.get('/', function(req, res) {
 // });
 
 
-var SPdir = globalurl + "/basemap/SingaporePools.geojson";
-var SingaporePools = JSON.parse(fs.readFileSync(SPdir, "utf8"));
-// console.log(SingaporePools);
-var SubzoneDir = globalurl + "/basemap/DGPSubZone.geojson";
-var SubZone = JSON.parse(fs.readFileSync(SubzoneDir, "utf8"));
+var SPdir = globalurl + "/basemap/SingaporePools.geojson"; //get Singapore Pool Data
+var SingaporePools = JSON.parse(fs.readFileSync(SPdir, "utf8")); //ParseJSON
+var SubzoneDir = globalurl + "/basemap/DGPSubZone.geojson"; //Get Subzone Data
+var SubZone = JSON.parse(fs.readFileSync(SubzoneDir, "utf8")); //Parse JSON
 
 var averaged = turf.average(
- SubZone, SingaporePools, 'Gp1Gp2Winn', 'AveragedWins');
+ SubZone, SingaporePools, 'Gp1Gp2Winn', 'AveragedWins'); //using turf to process data
+var file = globalurl + '/basemap/result.geojson';
+fs.writeFile(globalurl + "/basemap/result.geojson", JSON.stringify(averaged), function(err) {
+    if(err) {
+        return console.log(err);
+    }
+})//return result and put in basemap folder
 
 // var resultFeatures = SingaporePools.features.concat(
 //   averaged.features);
@@ -77,12 +82,7 @@ var averaged = turf.average(
 //     "features": averaged
 // };
 
-var file = globalurl + '/basemap/result.geojson';
-fs.writeFile(globalurl + "/basemap/result.geojson", JSON.stringify(averaged), function(err) {
-    if(err) {
-        return console.log(err);
-    }
-})
+
 // make directory
 var dirForGeojson = __dirname + '/view/geojson';
 var dirForUploadsFiles = __dirname + '/view/uploads';

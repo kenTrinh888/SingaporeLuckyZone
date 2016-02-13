@@ -2,8 +2,10 @@ L.Icon.Default.imagePath = '/images';
 L.AwesomeMarkers.Icon.prototype.options.prefix = 'ion';
 /* create leaflet map */
 var cities, map = L.map('map', {
+     fullscreenControl: true,
     center: [1.35, 103.8],
     zoom: 12
+
 });
 
 // ============================Open Streetmap Base========================================================
