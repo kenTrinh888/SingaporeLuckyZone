@@ -34,12 +34,10 @@
     <script src="lib/Leaflet-awesome-markers/dist/leaflet.awesome-markers.js"></script>
     <script src="lib/jquery-form/jquery.form.js"></script>
     <script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/Leaflet.fullscreen.min.js'></script>
-<link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/leaflet.fullscreen.css' rel='stylesheet' />
+    <link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/leaflet.fullscreen.css' rel='stylesheet' />
     <!-- geocoding -->
-<link rel="stylesheet" href="lib/geocode/Control.Geocoder.css" />
-<script src="lib/geocode/Control.Geocoder.js"></script>
-
-
+    <link rel="stylesheet" href="lib/geocode/Control.Geocoder.css" />
+    <script src="lib/geocode/Control.Geocoder.js"></script>
     <link rel="stylesheet" href="lib/styles/leaflet.css">
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
     <link rel="stylesheet" href="lib/Leaflet-awesome-markers/dist/leaflet.awesome-markers.css">
@@ -134,15 +132,23 @@
                         </fieldset>
                         <fieldset class="form-group">
                             <label>Color</label>
-                            <select type="text" id= "markercolor" name="holdercolor" >
+                            <select type="text" id="markercolor" name="holdercolor">
                             </select>
                         </fieldset>
                         <fieldset class="form-group">
                             <label>Icon</label>
-                            <input type="text" name="iconcolor" value="coffee" style="width:100px"><a href="https://fortawesome.github.io/Font-Awesome/icons/"><img src="/images/question-mark.png" alt="questionmark" style="width:15px;height:15px;"></a>
-
+                            <input type="text" name="iconcolor" value="coffee" style="width:100px">
+                            <!-- <a href="https://fortawesome.github.io/Font-Awesome/icons/"> -->
+                            <!-- <a href="/" data-toggle="tooltip" title="Hooray!">
+                                    <img src="/images/question-mark.png" alt="questionmark" style="width:15px;height:15px;">
+                        
+                                </a> -->
+                            <a class="top" title="" data-placement="top" data-toggle="tooltip" href="#" data-original-title="Please follow icon name at https://fortawesome.github.io/Font-Awesome/icons/"> <img src="/images/question-mark.png" alt="questionmark" style="width:15px;height:15px;"></a>
+                            <script type="text/javascript">
+                            $('a').tooltip();
+                            </script>
                         </fieldset>
-                        <input type="submit" value="Submit" >
+                        <input type="submit" value="Submit">
                     </form>
                 </div>
                 <div class="col-md-8 portfolio-item">
