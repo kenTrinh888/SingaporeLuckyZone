@@ -253,7 +253,7 @@ app.post('/upload', function(req, res) {
                 var names = fs.readdirSync(directory);
                 var ArraySend;
                 var objectSend ={};
-                for (var i = 1; i < names.length; i++) {
+                for (var i = 0; i < names.length; i++) {
                     var name = names[i];
                     var dir = path.join(__dirname, "view", "geojson", name);
                     // console.log(dir);
