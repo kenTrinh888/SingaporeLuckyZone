@@ -11,7 +11,7 @@ var cities, map = L.map('map', {
 // ============================Open Streetmap Base========================================================
 new L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     minZoom: 0,
-    maxZoom: 15,
+    maxZoom: 30,
     attribution: 'Map data © <a href="https://www.openstreetmap.org">OpenStreetMap contributors</a>'
 }).addTo(map);
 // ============================Open Streetmap Base========================================================
@@ -190,9 +190,11 @@ function parseFormValues(values) {
 // "/basemap/SingaporePools.geojson"
 
 displayMapSingaporePools("/basemap/SingaporePools.geojson", "SingaporePools")
+// displayMapSingaporePools("/basemap/DGPSubZone.geojson", "Zone")
+
     // displayMap("/basemap/DGPSubZone.geojson","SingaporePools")
 var layerdata;
-displayMapPolygon("/basemap/result.geojson", "Zone")
+displayMapPolygon("/basemap/result.geojson", "Chroropleth Zone")
 
 // /-------Display Propotional Map------------/
 displayMapSingaporePoolsPropotion("/basemap/SingaporePools.geojson", "SingaporePools (Propotional)")
@@ -298,6 +300,7 @@ function createPropSymbols(timestamps, data) {
 function updatePropSymbols(timestamp) {
 
     cities.eachLayer(function(layer) {
+
 
         var props = layer.feature.properties,
             radius = calcPropRadius(props.Gp1Gp2Winn),
@@ -499,6 +502,7 @@ function getColor(d) {
 }
 
 function style(feature) {
+    console.log(feature.properties.DGPSZ_NAME + " " +feature.properties.AveragedWins);
     return {
         fillColor: getColor(feature.properties.AveragedWins),
         weight: 2,
