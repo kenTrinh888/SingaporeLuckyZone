@@ -92,65 +92,86 @@
             <div class="row">
                 <div class="col-md-2 portfolio-item">
                     <h3>
-                    <a href="#">Layers</a>
+                    <a href="#">Layers Settings</a>
 
                 </h3>
-                    <h5>
-                    <a href="#">Upload Layer</a>
-
-                </h5>
-                    <form id="convert" action="https://ogre.adc4gis.com/convert" method="post" enctype="multipart/form-data" class="form-horizontal">
-                        <!-- <legend>Convert to GeoJSON</legend> -->
-                        <div class="control-group">
-                            <label for="upload" class="control-label">File*:</label>
-                            <!-- <label for="targetSrs" class="control-label">Source</label> -->
-                            <!-- <div class="controls">
+                    <button type="button" class="btn btn-info button-accordion" data-toggle="collapse" data-target="#uploadLayer">
+                        Upload Layer
+                    </button>
+                    <div id="uploadLayer" class="collapse collapse-part">
+                        <form id="convert" action="https://ogre.adc4gis.com/convert" method="post" enctype="multipart/form-data" class="form-horizontal">
+                            <!-- <legend>Convert to GeoJSON</legend> -->
+                            <div class="control-group">
+                                <label for="upload" class="control-label">File*:</label>
+                                <!-- <label for="targetSrs" class="control-label">Source</label> -->
+                                <!-- <div class="controls">
                                 <input>
                             </div> -->
-                            <div class="controls">
-                                <input id="upload" type="file" name="upload">
-                            </div>
-                            <label for="upload" class="control-label">
-                                Target Projection
-                            </label>
-                            <input type="text" id="targetSrs" name="targetSrs" value="EPSG:3414" style="width:100px">
-                            <div class="control-group">
                                 <div class="controls">
-                                    <input id="button" type="submit" value="Submit">
-                                    </p>
+                                    <input id="upload" type="file" name="upload" accept=".csv,.zip,.dgn,.bna,.json,.geojson,.kml,.kmz,.gpx,.gmt,.gml">
+                                    <a class="top" title="" data-placement="top" data-toggle="tooltip" href="#" data-original-title="Please refer to the accepted file extension at User Guide or http://ogre.adc4gis.com/"> <img src="/images/question-mark.png" alt="questionmark" style="width:15px;height:15px;"></a>
                                 </div>
-                            </div>
-                    </form>
+                                <label for="upload" class="control-label">
+                                    Target Projection
+                                </label>
+                                <input type="text" id="targetSrs" name="targetSrs" value="EPSG:3414" style="width:100px">
+                                <div class="control-group">
+                                    <div class="controls">
+                                        <input id="button" type="submit" value="Submit">
+                                        </p>
+                                    </div>
+                                </div>
+                        </form>
+                        </div>
                     </div>
-                    <h3>
-                    <a href="#">Change Marker </a>
-                </h3>
-                    <form id="changeMarkerForm">
-                        <fieldset class="form-group">
-                            <label>Layer</label>
-                            <select id="layerselection" name="layerselection"> </select>
-                        </fieldset>
-                        <fieldset class="form-group">
-                            <label>Color</label>
-                            <select type="text" id="markercolor" name="holdercolor">
-                            </select>
-                        </fieldset>
-                        <fieldset class="form-group">
-                            <label>Icon</label>
-                            <input type="text" name="iconcolor" value="coffee" style="width:100px">
-                            <!-- <a href="https://fortawesome.github.io/Font-Awesome/icons/"> -->
-                            <!-- <a href="/" data-toggle="tooltip" title="Hooray!">
+                    <!-- Change Marker -->
+                    <button type="button" class="btn btn-info button-accordion" data-toggle="collapse" data-target="#changeMarker">
+                        Change Marker
+                    </button>
+                    <div id="changeMarker" class="collapse collapse-part">
+                        <form id="changeMarkerForm">
+                            <fieldset class="form-group">
+                                <label>Layer</label>
+                                <select id="layerselection" name="layerselection"> </select>
+                            </fieldset>
+                            <fieldset class="form-group">
+                                <label>Color</label>
+                                <select type="text" id="markercolor" name="holdercolor">
+                                </select>
+                            </fieldset>
+                            <fieldset class="form-group">
+                                <label>Icon</label>
+                                <input type="text" name="iconcolor" placeholder="car" style="width:100px">
+                                <!-- <a href="https://fortawesome.github.io/Font-Awesome/icons/"> -->
+                                <!-- <a href="/" data-toggle="tooltip" title="Hooray!">
                                     <img src="/images/question-mark.png" alt="questionmark" style="width:15px;height:15px;">
                         
                                 </a> -->
-                            <a class="top" title="" data-placement="top" data-toggle="tooltip" href="#" data-original-title="Please follow icon name at https://fortawesome.github.io/Font-Awesome/icons/"> <img src="/images/question-mark.png" alt="questionmark" style="width:15px;height:15px;"></a>
-                            <script type="text/javascript">
-                            $('a').tooltip();
-                            </script>
-                        </fieldset>
+                                <a class="top" title="" data-placement="top" data-toggle="tooltip" href="#" data-original-title="Please follow icon name at https://fortawesome.github.io/Font-Awesome/icons/"> <img src="/images/question-mark.png" alt="questionmark" style="width:15px;height:15px;"></a>
+                               
+                            </fieldset>
+                            <input type="submit" value="Submit">
+                        </form>
+                    </div>
+                    <!-- Change Marker -->
+                    <!-- Table of nearest outlet -->
+                    <button type="button" class="btn btn-info button-accordion" data-toggle="collapse" data-target="#luckyoutlet">
+                        Lucky Outlet Nearby
+                    </button>
+                    <div id="luckyoutlet" class="collapse collapse-part">
+                        <form id="outletNearby">
+                            <fieldset class="form-group">
+                                <label>PostalCode</label>
+                                <input type="text" name="postalcode" value="560615" style="width:60px">
+                                 <a class="top" title="" data-placement="top" data-toggle="tooltip" href="#" data-original-title="Enter Postal Code without Prefix S. E.g: 650667" alt="questionmark" style="width:15px;height:15px;"></a>
+                            </fieldset>
                         <input type="submit" value="Submit">
-                    </form>
+
+                        </form>
+                    </div>
+                    <!-- Table of nearest outlet -->
                 </div>
+                <!-- Display Map -->
                 <div class="col-md-8 portfolio-item">
                     <h3>
                     <a href="#">Map</a>
@@ -160,18 +181,8 @@
                         <table id="properties"></table>
                     </div>
                 </div>
+                <!-- Display Map -->
             </div>
-            <!-- /.row -->
-            <!-- Projects Row -->
-            <!--  <div class="row">
-            <div class="col-md-4 portfolio-item">
-                <h3>
-                    <a href="#">Result Table</a>
-                </h3>
-            </div>
-           
-        </div> -->
-            <!-- /.row -->
             <hr>
             <!-- Footer -->
         </div>
@@ -179,5 +190,7 @@
         <script src="scripts/main.js"></script>
         <!-- endbuild -->
     </body>
-
+ <script type="text/javascript">
+                                $('a').tooltip();
+                                </script>
 </html>

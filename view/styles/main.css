@@ -165,3 +165,12 @@ a.tooltip span
     box-shadow: 5px 5px 8px #CCC;
 }
 /*tooltip*/
+
+/*accordion button settings*/
+.button-accordion {
+	margin-top:20px;
+	width:145px
+}
+.collapse-part{
+	margin-top: 20px;
+}

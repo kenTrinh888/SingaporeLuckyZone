@@ -19,32 +19,25 @@ new L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 L.Control.geocoder().addTo(map);
 // ============================GeoCoding========================================================
 
-// ============================Marker Selection========================================================
-var colorMarker = ['red', 'darkred', 'orange', 'green', 'darkgreen', 'blue', 'purple', 'darkpuple', 'cadetblue'];
-var markerName = ["automobile", "bank", "bar-chart", "beer", "bell", "bed", "calendar", "cloud", "coffee", "comment"];
-proj4.defs("EPSG:3414", "+proj=tmerc +lat_0=1.366666666666667 +lon_0=103.8333333333333 +k=1 +x_0=28001.642 +y_0=38744.572 +ellps=WGS84 +units=m +no_defs");
-// var controlLayers = L.control.layers().addTo(map);
-$.get("/getAllLayer", function(data) {
-    var names = data;
-    if (names.length === 0){
-        $('#layerselection').append($('<option>').text("No Layer uploaded").attr('value', "no layer"));
+// ============================OutletNearby========================================================
 
-    }else{
-    for (var i = 0; i < names.length; i++) {
-        var nameofLayer = names[i];
-        $('#layerselection').append($('<option>').text(nameofLayer).attr('value', nameofLayer));
+$('#outletNearby').submit(function() {
+    // Get all the forms elements and their values in one step
+    event.preventDefault();
+    var values = $(this).serialize();
+    var postalInput = parseFormValues(values);
+    var postalCode = postalInput.postalcode;
+    // $.getJSON('/getPostalCode/' + postalCode, function(data){
+    //     console.log(data.SearchResults[1].X)
+    //     console.log(data.SearchResults[1].Y)
+    // })
 
-    }
-}
 
-})
-for (var i = 1; i < colorMarker.length; i++) {
-        var nameofMarkerColor = colorMarker[i];
-        $('#markercolor').append($('<option>').text(nameofMarkerColor).attr('value', nameofMarkerColor));
+});
 
-    }
-// ============================Marker Selection========================================================
 
+
+// ============================Display Overlay Layer========================================================
 
 var layerControl = false;
 $.getJSON("/getJSONContent", function(data) {
@@ -62,7 +55,7 @@ $.getJSON("/getJSONContent", function(data) {
                 markerColor: MarkerColor,
                 prefix: 'fa'
             });
-            var layerdata = L.Proj.geoJson(dataLayer, {
+            var layerdata = L.geoJson(dataLayer, {
                 pointToLayer: function(feature, latlng) {
                     var propertyObject = feature.properties;
                     var property = "";
@@ -90,6 +83,35 @@ $.getJSON("/getJSONContent", function(data) {
 
 
 });
+// ============================Display Overlay Layer========================================================
+
+
+// ============================Marker Selection========================================================
+var colorMarker = ['red', 'darkred', 'orange', 'green', 'darkgreen', 'blue', 'purple', 'darkpuple', 'cadetblue'];
+var markerName = ["automobile", "bank", "bar-chart", "beer", "bell", "bed", "calendar", "cloud", "coffee", "comment"];
+proj4.defs("EPSG:3414", "+proj=tmerc +lat_0=1.366666666666667 +lon_0=103.8333333333333 +k=1 +x_0=28001.642 +y_0=38744.572 +ellps=WGS84 +units=m +no_defs");
+// var controlLayers = L.control.layers().addTo(map);
+$.get("/getAllLayer", function(data) {
+    var names = data;
+    if (names.length === 0){
+        $('#layerselection').append($('<option>').text("No Layer uploaded").attr('value', "no layer"));
+
+    }else{
+    for (var i = 0; i < names.length; i++) {
+        var nameofLayer = names[i];
+        $('#layerselection').append($('<option>').text(nameofLayer).attr('value', nameofLayer));
+
+    }
+}
+
+})
+for (var i = 1; i < colorMarker.length; i++) {
+        var nameofMarkerColor = colorMarker[i];
+        $('#markercolor').append($('<option>').text(nameofMarkerColor).attr('value', nameofMarkerColor));
+
+    }
+// ============================Marker Selection========================================================
+
 
 function getLayer(name, data) {
     object.name = data;
@@ -104,6 +126,8 @@ $('#convert').submit(function(e) {
     $(this).ajaxSubmit({
         // console.log("submit");
         success: function(data, textStatus, jqXHR) {
+
+            console.log(data);
             var layer = {
                     "name": layerName,
                     "datamain": data
@@ -134,7 +158,7 @@ $('#changeMarkerForm').submit(function() {
     var values = $(this).serialize();
     var MarkerSelection = parseFormValues(values);
     var nameofLayer = MarkerSelection.layerselection;
-    var iconType = MarkerSelection.iconcolor;
+    var iconType = MarkerSelection.iconcolor.toLowerCase();
     var holdercolor = MarkerSelection.holdercolor;
     var urlString = '/geojson/' + nameofLayer;
     $.getJSON(urlString, function(dataLayer) {
@@ -143,7 +167,7 @@ $('#changeMarkerForm').submit(function() {
             markerColor: holdercolor,
             prefix: 'fa'
         });
-        var layerdata = L.Proj.geoJson(dataLayer, {
+        var layerdata = L.geoJson(dataLayer, {
             pointToLayer: function(feature, latlng) {
                 var propertyObject = feature.properties;
                 var property = "";
@@ -275,7 +299,7 @@ function processData(data) {
 } // end processData()
 function createPropSymbols(timestamps, data) {
 
-    cities = L.Proj.geoJson(data, {
+    cities = L.geoJson(data, {
 
         pointToLayer: function(feature, latlng) {
 
@@ -416,7 +440,7 @@ function displayMapSingaporePools(url, name) {
             prefix: 'fa'
         });
         var property = "";
-        layerdata = L.Proj.geoJson(dataLayer, {
+        layerdata = L.geoJson(dataLayer, {
             // onEachFeature: onEachFeaturePoints,
             pointToLayer: function(feature, latlng) {
                 var propertyObject = feature.properties;
@@ -502,7 +526,6 @@ function getColor(d) {
 }
 
 function style(feature) {
-    console.log(feature.properties.DGPSZ_NAME + " " +feature.properties.AveragedWins);
     return {
         fillColor: getColor(feature.properties.AveragedWins),
         weight: 2,
