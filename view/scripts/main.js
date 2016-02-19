@@ -218,7 +218,6 @@ displayMapSingaporePools("/basemap/SingaporePools.geojson", "SingaporePools")
 
     // displayMap("/basemap/DGPSubZone.geojson","SingaporePools")
 var layerdata;
-displayMapPolygon("/basemap/result.geojson", "Chroropleth Zone")
 
 // /-------Display Propotional Map------------/
 displayMapSingaporePoolsPropotion("/basemap/SingaporePools.geojson", "SingaporePools (Propotional)")
@@ -427,6 +426,7 @@ function createLegend(min, max) {
 } // end createLegend()
 // /-------End Display Propotional Map------------/
 
+displayMapPolygon("/basemap/result.geojson", "Chroropleth Zone")
 
     // /---------------Display Chrolopeth Map------------/
 function displayMapSingaporePools(url, name) {

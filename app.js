@@ -55,17 +55,19 @@ app.get('/', function(req, res) {
 
 var SPdir = globalurl + "/basemap/SingaporePools.geojson"; //get Singapore Pool Data
 var SingaporePools = JSON.parse(fs.readFileSync(SPdir, "utf8")); //ParseJSON
-var SubzoneDir = globalurl + "/basemap/DGPSubZone.geojson"; //Get Subzone Data
-var SubZone = JSON.parse(fs.readFileSync(SubzoneDir, "utf8")); //Parse JSON
+// var SPdirPool = globalurl + "/basemap/SPools.geojson"; //get Singapore Pool Data
+// var SPools = JSON.parse(fs.readFileSync(SPdirPool, "utf8")); //ParseJSON
+// var SubzoneDir = globalurl + "/basemap/DGPSubZone.geojson"; //Get Subzone Data
+// var SubZone = JSON.parse(fs.readFileSync(SubzoneDir, "utf8")); //Parse JSON
 
-var averaged = turf.average(
-    SubZone, SingaporePools, 'Gp1Gp2Winn', 'AveragedWins'); //using turf to process data
-var file = globalurl + '/basemap/result.geojson';
-fs.writeFile(globalurl + "/basemap/result.geojson", JSON.stringify(averaged), function(err) {
-        if (err) {
-            return console.log(err);
-        }
-    }) //return result and put in basemap folder
+// var averaged = turf.average(
+//     SubZone, SPools, 'Gp1Gp2Winn', 'AveragedWins'); //using turf to process data
+// var file = globalurl + '/basemap/result.geojson';
+// fs.writeFile(globalurl + "/basemap/result.geojson", JSON.stringify(averaged), function(err) {
+//         if (err) {
+//             return console.log(err);
+//         }
+//     }) //return result and put in basemap folder
 
 // var resultFeatures = SingaporePools.features.concat(
 //   averaged.features);
@@ -129,7 +131,7 @@ app.post('/upload', function(req, res) {
         // }
 
         var features = objectWrite.features;
-        for (var i = 0 ; i < features.length; i++){
+        for (var i = 0; i < features.length; i++) {
             var oldCor = features[i].geometry.coordinates;
             var newCoor = proj4(proj4("EPSG:3414")).inverse(oldCor);
             objectWrite.features[i].geometry.coordinates = newCoor;
@@ -288,8 +290,11 @@ app.get('/getUploadFilesName', function(req, res) {
 
 });
 
-app.get('/getPostalCode/:id', function(req, res) {
+app.get('/getPostalCode/:id/:distance/:numberOfWins', function(req, res) {
     var postcode = req.params.id;
+    var distance = req.params.distance;
+    var numberOfWins = req.params.numberOfWins;
+    numberOfWins = parseInt(numberOfWins);
     // console.log("id " + postcode);
     var urlString = "http://www.onemap.sg/APIV2/services.svc/basicSearchV2?token=qo/s2TnSUmfLz+32CvLC4RMVkzEFYjxqyti1KhByvEacEdMWBpCuSSQ+IFRT84QjGPBCuz/cBom8PfSm3GjEsGc8PkdEEOEr&searchVal=" + postcode + "&otptFlds=SEARCHVAL,CATEGORY&returnGeom=1&rset=1&projSys=WGS84";
     request(urlString, function(error, response, body) {
@@ -310,7 +315,7 @@ app.get('/getPostalCode/:id', function(req, res) {
                 }
             };
             // var currentPointJSON = JSON.parse(currentPoint);
-            var buffer = turf.buffer(currentPoint, 1, 'kilometers');
+            var buffer = turf.buffer(currentPoint, distance, 'kilometers');
 
             buffer.features[0].properties = {
                 "fill": "#6BC65F",
@@ -319,7 +324,32 @@ app.get('/getPostalCode/:id', function(req, res) {
             };
             buffer.csr = { "type": "name", "properties": { "name": "urn:ogc:def:crs:EPSG::3414" } },
                 // console.log(buffer);
-            ptsWithin = turf.within(SingaporePools, buffer);
+                ptsWithin = turf.within(SingaporePools, buffer);
+            var resultFeatures = [];
+            var tempresultFeatures = ptsWithin.features;
+
+            for (var i = 0; i < tempresultFeatures.length; i++) {
+                var aFeature = tempresultFeatures[i];
+                resultFeatures.push(aFeature);
+
+               
+            }
+
+             for (var i = 0; i < resultFeatures.length; i++) {
+                var aFeature = resultFeatures[i];
+                var wins = aFeature.properties.Gp1Gp2Winn;
+                wins = parseInt(wins);
+               
+
+                if (wins < numberOfWins) {
+                    // console.log(i);
+                     ptsWithin.features.splice(ptsWithin.features.indexOf(aFeature), 1 );
+                    // ptsWithin.features.splice(i, 1);
+                     // console.log(ptsWithin.features.length);
+
+                }
+             }
+
 
             // buffer.features.push(currentPoint);
 
