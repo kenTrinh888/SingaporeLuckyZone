@@ -7,7 +7,7 @@ var cities, map = L.map('map', {
     zoom: 12
 
 });
-
+var layerControl = false;
 // ============================Open Streetmap Base========================================================
 new L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     minZoom: 0,
@@ -25,12 +25,45 @@ $('#outletNearby').submit(function() {
     // Get all the forms elements and their values in one step
     event.preventDefault();
     var values = $(this).serialize();
-    var postalInput = parseFormValues(values);
-    var postalCode = postalInput.postalcode;
-    // $.getJSON('/getPostalCode/' + postalCode, function(data){
-    //     console.log(data.SearchResults[1].X)
-    //     console.log(data.SearchResults[1].Y)
-    // })
+    var Input = parseFormValues(values);
+    var postalCode = Input.postalcode;
+    var distance = Input.distance;
+    var numberOfWinds = Input.numberOfWins;
+    var url = '/getPostalCode/' + postalCode + "/" + distance + "/" + numberOfWinds;
+
+    $.getJSON(url, function(data){
+        var buffer = data.buffer;
+         var bufferData = L.geoJson(buffer).addTo(map)
+        var points = data.points;
+          var Marker = L.AwesomeMarkers.icon({
+                icon: "star",
+                markerColor: "blue",
+                prefix: 'fa'
+            });
+        var layerdata = L.geoJson(points, {
+          
+                pointToLayer: function(feature, latlng) {
+                    var propertyObject = feature.properties;
+                    var property = "";
+                    for (var key in propertyObject) {
+                        if (propertyObject.hasOwnProperty(key)) {
+                            property += "<p><b>" + key + "</b>" + " : " + propertyObject[key] + "</p>";
+                        }
+                    }
+                    // console.log(feature.properties.Name);
+
+                    return L.marker(latlng, {
+                        icon: Marker
+                    }).bindPopup(property);
+                }
+            }).addTo(map);
+            if (layerControl === false) {
+                layerControl = L.control.layers().addTo(map);
+            }
+            layerControl.addOverlay(layerdata, "Luck Nearby");
+            layerControl.addOverlay(bufferData, "Buffer Point");
+
+    })
 
 
 });

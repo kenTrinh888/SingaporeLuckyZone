@@ -298,6 +298,7 @@ app.get('/getPostalCode/:id/:distance/:numberOfWins', function(req, res) {
     // console.log("id " + postcode);
     var urlString = "http://www.onemap.sg/APIV2/services.svc/basicSearchV2?token=qo/s2TnSUmfLz+32CvLC4RMVkzEFYjxqyti1KhByvEacEdMWBpCuSSQ+IFRT84QjGPBCuz/cBom8PfSm3GjEsGc8PkdEEOEr&searchVal=" + postcode + "&otptFlds=SEARCHVAL,CATEGORY&returnGeom=1&rset=1&projSys=WGS84";
     request(urlString, function(error, response, body) {
+        var objectSend = {"buffer" : null,"points":null};
         if (!error && response.statusCode == 200) {
             var data = JSON.parse(body);
             var X = data.SearchResults[1].X; //Get X, and Y coordinate
@@ -324,7 +325,8 @@ app.get('/getPostalCode/:id/:distance/:numberOfWins', function(req, res) {
             };
             buffer.csr = { "type": "name", "properties": { "name": "urn:ogc:def:crs:EPSG::3414" } },
                 // console.log(buffer);
-                ptsWithin = turf.within(SingaporePools, buffer);
+
+            ptsWithin = turf.within(SingaporePools, buffer);
             var resultFeatures = [];
             var tempresultFeatures = ptsWithin.features;
 
@@ -334,6 +336,7 @@ app.get('/getPostalCode/:id/:distance/:numberOfWins', function(req, res) {
 
                
             }
+
 
              for (var i = 0; i < resultFeatures.length; i++) {
                 var aFeature = resultFeatures[i];
@@ -346,16 +349,17 @@ app.get('/getPostalCode/:id/:distance/:numberOfWins', function(req, res) {
                      ptsWithin.features.splice(ptsWithin.features.indexOf(aFeature), 1 );
                     // ptsWithin.features.splice(i, 1);
                      // console.log(ptsWithin.features.length);
-
                 }
              }
-
-
+            ptsWithin.csr = { "type": "name", "properties": { "name": "urn:ogc:def:crs:EPSG::3414" } },
+            buffer.features.push(currentPoint)
+            objectSend.buffer = buffer;
+            objectSend.points  = ptsWithin
             // buffer.features.push(currentPoint);
 
 
             // var returnBuffer = JSON.parse(buffer);
-            res.send(ptsWithin);
+            res.send(objectSend);
 
 
 
