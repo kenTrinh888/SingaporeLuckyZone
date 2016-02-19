@@ -33,7 +33,7 @@ $('#outletNearby').submit(function() {
 
     $.getJSON(url, function(data){
         var buffer = data.buffer;
-         var bufferData = L.geoJson(buffer).addTo(map)
+         var bufferData = L.geoJson(buffer).addTo(map).bindPopup("Your Location")
         var points = data.points;
           var Marker = L.AwesomeMarkers.icon({
                 icon: "star",
